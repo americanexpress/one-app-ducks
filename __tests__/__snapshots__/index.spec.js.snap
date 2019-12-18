@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`immutable store test should fail to initialize if provided non-immutable initial state 1`] = `"inputState.withMutations is not a function"`;
+
+exports[`immutable store test should initialize the state for all reducers with immutable data types 1`] = `
+Immutable.Map {
+  "browser": Immutable.Map {
+    "cookies": null,
+    "location": Immutable.Map {
+      "origin": null,
+      "host": null,
+      "protocol": null,
+    },
+    "userAgent": null,
+  },
+  "error": Immutable.Map {},
+  "errorReporting": Immutable.Map {
+    "queue": Immutable.List [],
+    "pending": Immutable.List [],
+    "pendingPromise": null,
+    "retryWait": 500,
+  },
+  "intl": Immutable.Map {
+    "activeLocale": "en-US",
+  },
+  "redirection": Immutable.Map {
+    "destination": null,
+    "redirectionInFlight": false,
+  },
+  "rendering": Immutable.Map {
+    "disableStyles": false,
+    "disableScripts": false,
+    "renderPartialOnly": false,
+  },
+}
+`;
+
+exports[`immutable store test should merge initial immutable state with missing initial state 1`] = `
+Immutable.Map {
+  "browser": Immutable.Map {
+    "cookies": null,
+    "location": Immutable.Map {
+      "origin": null,
+      "host": null,
+      "protocol": null,
+    },
+    "userAgent": null,
+  },
+  "error": Immutable.Map {},
+  "errorReporting": Immutable.Map {
+    "queue": Immutable.List [],
+    "pending": Immutable.List [],
+    "pendingPromise": null,
+    "retryWait": 500,
+  },
+  "intl": Immutable.Map {
+    "activeLocale": "en-US",
+  },
+  "redirection": Immutable.Map {
+    "destination": null,
+    "redirectionInFlight": false,
+  },
+  "rendering": Immutable.Map {
+    "disableStyles": false,
+    "disableScripts": false,
+    "renderPartialOnly": false,
+  },
+}
+`;
+
+exports[`index should expose the publicAPI 1`] = `
+Array [
+  "setOrigin",
+  "setUserAgent",
+  "getCookies",
+  "applicationError",
+  "clearError",
+  "addErrorToReport",
+  "sendErrorReport",
+  "getLocalePack",
+  "loadLanguagePack",
+  "queryLanguagePack",
+  "updateLocale",
+  "externalRedirect",
+  "setDangerouslyDisableScripts",
+  "setDangerouslyDisableScriptsAndStyles",
+  "setRenderPartialOnly",
+  "default",
+]
+`;

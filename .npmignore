@@ -1,0 +1,5 @@
+#add items that you don't want published
+test-results
+.jest-cache
+__tests__
+mock

@@ -1,0 +1,19 @@
+# misc
+.DS_Store
+.idea
+.sass_cache
+
+# node/npm
+node_modules
+*.log
+
+# build
+dist
+lib
+*.tgz
+
+# test
+junit.xml
+test-results
+coverage
+.jest-cache

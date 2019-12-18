@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`intl duck actions loadLanguagePack is loaded on server (no requestIdleCallback) 1`] = `
+Array [
+  Array [
+    [Function],
+    10000000,
+  ],
+]
+`;
+
+exports[`intl duck actions loadLanguagePack is loaded on server 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;
+
+exports[`intl duck actions loadLanguagePack should throw when the error does not have a response 1`] = `[Error: This error has no response]`;
+
+exports[`intl duck actions loadLanguagePack should throw when there is a non-404 error response 1`] = `[Error: Internal Server Error (https://example.com/cdn/foo-bar/1.0.0/bd-lc/foo-bar.json)]`;
+
+exports[`intl duck actions updateLocale actions test should allow any valid BCP 47 locale if enableAllIntlLocales is true 1`] = `
+Object {
+  "locale": "be-BY",
+  "type": "@americanexpress/one-app-ducks/intl/UPDATE_LOCALE",
+}
+`;
+
+exports[`intl duck actions updateLocale actions test should reject a valid BCP 47 locale if enableAllIntlLocales is true and Intl.js does not have a bundle for it 1`] = `[Error: No locale bundle available for tlh]`;
+
+exports[`intl duck actions updateLocale actions test should reject if no locale is given 1`] = `"No locale was given"`;
+
+exports[`intl duck reducer should add relevant meta when deferring a force load 1`] = `
+Immutable.Map {
+  "activeLocale": "en-US",
+  "languagePacks": Immutable.Map {
+    "en-US": Immutable.Map {
+      "axp-module": Immutable.Map {
+        "_pendingDeferredForceLoad": true,
+      },
+    },
+  },
+}
+`;
+
+exports[`intl duck reducer should have an initial state 1`] = `
+Immutable.Map {
+  "activeLocale": "en-US",
+}
+`;
+
+exports[`intl duck reducer should keep the loaded data on unsuccessful language request action after success on server 1`] = `
+Immutable.Map {
+  "activeLocale": "locale",
+  "languagePacks": Immutable.Map {
+    "locale": Immutable.Map {
+      "foo": Immutable.Map {
+        "data": Immutable.Map {
+          "data": "data",
+        },
+        "isLoading": false,
+        "_loadedOnServer": false,
+        "errorExpiration": 11234,
+        "error": [Error: error],
+      },
+    },
+  },
+}
+`;
+
+exports[`intl duck reducer successful language request action on the browser 1`] = `
+Immutable.Map {
+  "activeLocale": "locale",
+  "languagePacks": Immutable.Map {
+    "locale": Immutable.Map {
+      "foo": Immutable.Map {
+        "data": Immutable.Map {
+          "data": "data",
+        },
+        "isLoading": false,
+        "_loadedOnServer": true,
+      },
+    },
+  },
+}
+`;
+
+exports[`intl duck reducer successful language request action on the server 1`] = `
+Immutable.Map {
+  "activeLocale": "locale",
+  "languagePacks": Immutable.Map {
+    "locale": Immutable.Map {
+      "foo": Immutable.Map {
+        "data": Immutable.Map {
+          "data": "data",
+        },
+        "isLoading": false,
+        "_loadedOnServer": false,
+      },
+    },
+  },
+}
+`;
+
+exports[`intl duck reducer update locale action 1`] = `
+Immutable.Map {
+  "activeLocale": "de-AT",
+}
+`;
+
+exports[`intl duck reducer update locale with mock data should update the state with mocked data 1`] = `
+Immutable.Map {
+  "activeLocale": "en-NZ",
+}
+`;
