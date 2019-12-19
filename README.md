@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src='https://github.com/americanexpress/one-app-ducks/raw/master/one-app-ducks.png' alt="One App - One Amex" width='50%'/>
+  <img src='https://github.com/americanexpress/one-app-ducks/raw/master/one-app-ducks.png' alt="One App - One App Ducks" width='50%'/>
 </h1>
 
 [![npm](https://img.shields.io/npm/v/@americanexpress/one-app-ducks)](https://www.npmjs.com/package/@americanexpress/one-app-ducks)
