@@ -1,10 +1,9 @@
-<h1>
-  <center>
-    <br />
-    <img src="./one-app-ducks.png" alt="One App Ducks - One Amex" width="50%" />
-    <br /><br />
-  </center>
+<h1 align="center">
+  <img src='https://github.com/americanexpress/one-app-ducks/raw/master/one-app-ducks.png' alt="One App Ducks - One Amex" width='50%'/>
 </h1>
+
+[![npm](https://img.shields.io/npm/v/@americanexpress/one-app-ducks)](https://www.npmjs.com/package/@americanexpress/one-app-ducks)
+[![Travis (.org) branch](https://img.shields.io/travis/americanexpress/one-app-ducks/master)](https://travis-ci.org/americanexpress/one-app-ducks)
 
 > [Redux](https://redux.js.org/) [ducks](https://github.com/erikras/ducks-modular-redux) used within the One App ecosystem.
 
