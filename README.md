@@ -36,10 +36,10 @@ npm i @americanexpress/one-app-ducks
 #### How to use
 
 ```js
-import { combineReducers, createStore } from 'redux';
+import { combineReducers } from 'redux-immutable';
+import { createStore } from 'redux';
 import globalReducers from '@americanexpress/one-app-ducks';
 
-// See "reducers" section of this document for more info
 const appReducer = combineReducers({
   ...globalReducers,
   ...otherReducers, // Your specific reducers
@@ -48,7 +48,6 @@ const appReducer = combineReducers({
 const store = createStore(
   appReducer
 );
-
 ```
 
 ## 🎛️ API
@@ -61,16 +60,6 @@ creators for a given branch of state. These ducks make up the core of One App's 
 The default export is an object of reducers meant to be included in a call to Redux immutable's
 [`combineReducers`](https://redux.js.org/api/combinereducers) when setting up the store. Included
 reducers are `browser`, `error`, `errorReporting`, `intl`, `redirection` and `rendering`.
-
-```js
-import { combineReducers } from 'redux-immutable';
-import globalReducers from '@americanexpress/one-app-ducks';
-
-const appReducer = combineReducers({
-  ...globalReducers,
-  ...otherReducers,
-});
-```
 
 **Contents:**
 
