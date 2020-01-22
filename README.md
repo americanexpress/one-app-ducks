@@ -58,15 +58,6 @@ const store = createStore(
 [Ducks](https://github.com/erikras/ducks-modular-redux) include the reducer, selectors and action
 creators for a given branch of state. These ducks make up the core of One App's state.
 
-- [`browser`](#browser-duck)
-- [`error`](#error-duck)
-- [`errorReporting`](#errorreporting-duck)
-- [`intl`](#intl-duck)
-- [`redirection`](#redirection-duck)
-- [`rendering`](#rendering-duck)
-
-### Reducers
-
 The default export is an object of reducers meant to be included in a call to Redux immutable's
 [`combineReducers`](https://redux.js.org/api/combinereducers) when setting up the store. Included
 reducers are `browser`, `error`, `errorReporting`, `intl`, `redirection` and `rendering`.
@@ -81,18 +72,30 @@ const appReducer = combineReducers({
 });
 ```
 
-The state shape follows the schema below:
+**Contents:**
 
-### `browser` duck
+- [`browser`](#browser-duck)
+- [`error`](#error-duck)
+- [`errorReporting`](#errorreporting-duck)
+- [`intl`](#intl-duck)
+- [`redirection`](#redirection-duck)
+- [`rendering`](#rendering-duck)
+
+### `browser` Duck
 
 This duck is for reading information about the user's browser. It is particularly helpful on the
 server.
 
-- [State shape](#state-shape)
-- [Selectors](#selectors)
-- [Action creators](#action-creators)
+**Contents:**
 
-#### State shape
+- [State Shape](#state-shape)
+- [Selectors](#selectors)
+  - [`getCookies`](#getCookies)
+- [Action creators](#action-creators)
+  - [`setUserAgent`](#setuseragent)
+  - [`setOrigin`](#setorigin)
+
+#### State Shape
 
 ```js
 const state = new Map({
@@ -132,10 +135,9 @@ const cookies = getCookies(store.getState());
 
 #### Action Creators
 
-- [`setUserAgent`](#setuseragent-for-internal-use)
-- [`setOrigin`](#setorigin-for-internal-use)
+##### `setUserAgent`
 
-##### `setUserAgent` (for internal use)
+> ⚠️ For Internal Use
 
 This action creator can be used to set the [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
 
@@ -153,7 +155,9 @@ import { setUserAgent } from '@americanexpress/one-app-ducks';
 store.dispatch(setUserAgent('curl/7.35.0?'));
 ```
 
-##### `setOrigin` (for internal use)
+##### `setOrigin`
+
+> ⚠️ For Internal Use
 
 This action creator can be used to set the [Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin).
 
@@ -172,15 +176,19 @@ store.dispatch(setOrigin('https://example.com'));
 
 ```
 
-### `error` duck
+### `error` Duck
 
-The error duck tracks whether the One App is in an error state and what the HTTP status code is for
-the error.
+The error duck tracks whether One App is in an error state and what the HTTP status code is for the
+error.
 
-- [State shape](#state-shape-1)
+**Contents:**
+
+- [State Shape](#state-shape-1)
 - [Action creators](#action-creators-1)
+  - [`applicationError`](#applicationerror)
+  - [`clearError`](#clearerror)
 
-#### State shape
+#### State Shape
 
 ```js
 const state = new Map({
@@ -192,9 +200,6 @@ const state = new Map({
 ```
 
 #### Action creators
-
-- [`applicationError`](#applicationerror)
-- [`clearError`](#clearerror)
 
 ##### `applicationError`
 
@@ -227,11 +232,11 @@ import { clearError } from '@americanexpress/one-app-ducks';
 store.dispatch(clearError());
 ```
 
-### `errorReporting` duck
+### `errorReporting` Duck
 
-The error reporting duck is for sending errors to the `errorReportingUrl` by the environment
-variable `ONE_CLIENT_REPORTING_URL`. You can find more documentation on environment variables for
-One App in the [One App documentation](https://github.com/americanexpress/one-app/blob/master/runtime-configuration.md).
+The error reporting duck is for sending client side errors to the `errorReportingUrl` configured by
+the  environment variable `ONE_CLIENT_REPORTING_URL`. You can find more documentation on environment
+variables for One App in the [One App documentation](https://github.com/americanexpress/one-app/blob/master/runtime-configuration.md).
 On the server the errors reported are simply logged. Reported errors will have the following format:
 
 ```js
@@ -243,10 +248,14 @@ On the server the errors reported are simply logged. Reported errors will have t
 });
 ```
 
-- [State shape](#state-shape-2)
-- [Action creators](#action-creators-2)
+**Contents:**
 
-#### State shape
+- [State Shape](#state-shape-2)
+- [Action creators](#action-creators-2)
+  - [`addErrorToReport`](#adderrortoreport)
+  - [`sendErrorReport`](#senderrorreport)
+
+#### State Shape
 
 ```js
 const state = new Map({
@@ -261,9 +270,6 @@ const state = new Map({
 ```
 
 #### Action creators
-
-- [`addErrorToReport`](#adderrortoreport)
-- [`sendErrorReport`](#senderrorreport)
 
 ##### `addErrorToReport`
 
@@ -301,16 +307,22 @@ import { sendErrorReport } from '@americanexpress/one-app-ducks';
 store.dispatch(sendErrorReport());
 ```
 
-### `intl` duck
+### `intl` Duck
 
 The `intl` duck is for enabling internationalization. It is used to load the language packs bundled
 with each module. See usage in the [`one-app-locale-bundler` README](https://github.com/americanexpress/one-app-cli/tree/master/packages/one-app-locale-bundler#-usage)
 for details on how to include language packs in your module bundles.
 
-- [State shape](#state-shape-3)
-- [Action creators](#action-creators-3)
+**Contents:**
 
-#### State shape
+- [State Shape](#state-shape-3)
+- [Action creators](#action-creators-3)
+  - [`loadLanguagePack`](#loadlanguagepack)
+  - [`queryLanguagePack`](#querylanguagepack)
+  - [`updateLocale`](#updatelocale)
+  - [`getLocalePack`](#getlocalepack)
+
+#### State Shape
 
 ```js
 const state = new Map({
@@ -336,11 +348,6 @@ const state = new Map({
 ```
 
 #### Action creators
-
-- [`loadLanguagePack`](#loadlanguagepack)
-- [`queryLanguagePack`](#querylanguagepack)
-- [`updateLocale`](#updatelocale)
-- [`getLocalePack`](#getlocalepack)
 
 ##### `loadLanguagePack`
 
@@ -436,14 +443,17 @@ import { getLocalePack } from '@americanexpress/one-app-ducks';
 store.dispatch(getLocalePack('en-GB'));
 ```
 
-### `redirection` duck
+### `redirection` Duck
 
 The redirection duck is for managing redirection of users. It is particularly useful on the server.
 
-- [State shape](#state-shape-4)
-- [Action creators](#action-creators-4)
+**Contents:**
 
-#### State shape
+- [State Shape](#state-shape-4)
+- [Action creators](#action-creators-4)
+  - [`externalRedirect`](#externalredirect)
+
+#### State Shape
 
 ```js
 const state = new Map({
@@ -462,6 +472,10 @@ const state = new Map({
 This action creator can be used to redirect a user out of your one app instance either on the server
 (via 302 response) or on the client.
 
+| Argument | Type | Description |
+|---|---|---|
+| `redirectUrl` | `String` | (required) fully qualified URL to redirect the user to |
+
 ```js
 import { externalRedirect } from '@americanexpress/one-app-ducks';
 
@@ -470,14 +484,19 @@ import { externalRedirect } from '@americanexpress/one-app-ducks';
 store.dispatch(externalRedirect('https://example.com'));
 ```
 
-### `rendering` duck
+### `rendering` Duck
 
 The rendering duck controls how the server renders the HTML page sent to the client.
 
-- [State shape](#state-shape-5)
-- [Action creators](#action-creators-5)
+**Contents:**
 
-#### State shape
+- [State Shape](#state-shape-5)
+- [Action creators](#action-creators-5)
+  - [`setRenderPartialOnly`](#setrenderpartialonly)
+  - [`setDangerouslyDisableScripts`](#setdangerouslydisablescripts)
+  - [`setDangerouslyDisableScriptsAndStyles`](#setdangerouslydisablescriptsandstyles)
+
+#### State Shape
 
 ```js
 const state = new Map({
@@ -493,13 +512,13 @@ const state = new Map({
 
 #### Action creators
 
-- [`setRenderPartialOnly`](#setrenderpartialonly)
-- [`setDangerouslyDisableScripts`](#setdangerouslydisablescripts)
-- [`setDangerouslyDisableScriptsAndStyles`](#setdangerouslydisablescriptsandstyles)
-
 ##### `setRenderPartialOnly`
 
 Use this action creator to render static markup from a holocron module, rather than a complete page.
+
+| Argument | Type | Description |
+|---|---|---|
+| `renderPartialOnly` | `Boolean` | (required) set whether a partial should be rendered or not |
 
 ```js
 import { setRenderPartialOnly } from '@americanexpress/one-app-ducks';
@@ -513,6 +532,10 @@ dispatch(setRenderPartialOnly(true));
 
 Use this action creator to disable scripts for being added to the rendered page.
 
+| Argument | Type | Description |
+|---|---|---|
+| `disableScripts` | `Boolean` | (required) set whether scripts should be disabled |
+
 ```js
 import { setDangerouslyDisableScripts } from '@americanexpress/one-app-ducks';
 
@@ -524,6 +547,10 @@ dispatch(setDangerouslyDisableScripts(true));
 ##### `setDangerouslyDisableScriptsAndStyles`
 
 Use this action creator to disable scripts and styles for being added to the rendered page.
+
+| Argument | Type | Description |
+|---|---|---|
+| `disableScriptsAndStyles` | `Boolean` | (required) set whether both scripts and styles should be disabled |
 
 ```js
 import { setDangerouslyDisableScriptsAndStyles } from '@americanexpress/one-app-ducks';
