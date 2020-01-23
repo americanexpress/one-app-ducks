@@ -73,7 +73,7 @@ reducers are `browser`, `error`, `errorReporting`, `intl`, `redirection` and `re
 ### `browser` Duck
 
 This duck is for reading information about the user's browser. It is particularly helpful on the
-server.
+server where this information is not readily available.
 
 **Contents:**
 
@@ -126,9 +126,8 @@ const cookies = getCookies(store.getState());
 
 ##### `setUserAgent`
 
-> ⚠️ For Internal Use
-
 This action creator can be used to set the [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
+It is used directly by One App, and it is unlikely that any module would need it.
 
 This action creator can take the following argument:
 
@@ -146,9 +145,8 @@ store.dispatch(setUserAgent('curl/7.35.0?'));
 
 ##### `setOrigin`
 
-> ⚠️ For Internal Use
-
 This action creator can be used to set the [Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin).
+It is used directly by One App, and it is unlikely that any module would need it.
 
 This action creator can take the following argument:
 
@@ -167,8 +165,8 @@ store.dispatch(setOrigin('https://example.com'));
 
 ### `error` Duck
 
-The error duck tracks whether One App is in an error state and what the HTTP status code is for the
-error.
+The error duck tracks whether One App is in an error state and what the
+[HTTP status code](https://www.restapitutorial.com/httpstatuscodes.html) is for the error.
 
 **Contents:**
 
@@ -182,7 +180,7 @@ error.
 ```js
 const state = new Map({
   error: new Map({
-    code: Number, // HTTP error code
+    code: Number, // HTTP error code (undefined if not set)
   }),
   // ...
 });
@@ -226,7 +224,9 @@ store.dispatch(clearError());
 The error reporting duck is for sending client side errors to the `errorReportingUrl` configured by
 the  environment variable `ONE_CLIENT_REPORTING_URL`. You can find more documentation on environment
 variables for One App in the [One App documentation](https://github.com/americanexpress/one-app/blob/master/runtime-configuration.md).
-On the server the errors reported are simply logged. Reported errors will have the following format:
+On the server the errors reported are simply logged with the assumption that the underlying
+infrastructure will pick up those logs and ship them to where they can be better kept and analyzed.
+Reported errors will have the following format:
 
 ```js
 ({
@@ -434,7 +434,8 @@ store.dispatch(getLocalePack('en-GB'));
 
 ### `redirection` Duck
 
-The redirection duck is for managing redirection of users. It is particularly useful on the server.
+The redirection duck is for managing redirection of users. It is particularly useful on the server
+where it is used to send a [`302`](https://www.restapitutorial.com/httpstatuscodes.html) response.
 
 **Contents:**
 
