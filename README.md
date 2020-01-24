@@ -5,7 +5,8 @@
 [![npm](https://img.shields.io/npm/v/@americanexpress/one-app-ducks)](https://www.npmjs.com/package/@americanexpress/one-app-ducks)
 [![Travis (.org) branch](https://img.shields.io/travis/americanexpress/one-app-ducks/master)](https://travis-ci.org/americanexpress/one-app-ducks)
 
-> [Redux](https://redux.js.org/) [ducks](https://github.com/erikras/ducks-modular-redux) used within the One App ecosystem.
+> [Redux](https://redux.js.org/) [ducks](https://github.com/erikras/ducks-modular-redux) used within
+> the One App ecosystem.
 
 ## 👩‍💻 Hiring 👨‍💻
 
@@ -16,7 +17,7 @@ Want to get paid for your contributions to `one-app-ducks`?
 
 * [Features](#-features)
 * [Usage](#-usage)
-* [API](#-api)
+* [API](#%EF%B8%8F-api)
 * [Available Scripts](#-available-scripts)
 * [Contributing](#-contributing)
 
@@ -35,10 +36,10 @@ npm i @americanexpress/one-app-ducks
 #### How to use
 
 ```js
-import { combineReducers, createStore } from 'redux';
+import { combineReducers } from 'redux-immutable';
+import { createStore } from 'redux';
 import globalReducers from '@americanexpress/one-app-ducks';
 
-// See "reducers" section of this document for more info
 const appReducer = combineReducers({
   ...globalReducers,
   ...otherReducers, // Your specific reducers
@@ -47,31 +48,62 @@ const appReducer = combineReducers({
 const store = createStore(
   appReducer
 );
-
 ```
 
 ## 🎛️ API
 
-### `reducers`
+### Overview
 
-The default export is an object of reducers meant to be included in a call to
-Redux's [`combineReducers`](https://redux.js.org/api/combinereducers) when
-setting up the store. Included reducers are `browser`, `error`, `errorReporting`, `intl`,`redirection` and `rendering`.
+[Ducks](https://github.com/erikras/ducks-modular-redux) include the reducer, selectors and action
+creators for a given branch of state. These ducks make up the core of One App's state.
+
+The default export is an object of reducers meant to be included in a call to Redux immutable's
+[`combineReducers`](https://redux.js.org/api/combinereducers) when setting up the store. Included
+reducers are `browser`, `error`, `errorReporting`, `intl`, `redirection` and `rendering`.
+
+**Contents:**
+
+- [`browser`](#browser-duck)
+- [`error`](#error-duck)
+- [`errorReporting`](#errorreporting-duck)
+- [`intl`](#intl-duck)
+- [`redirection`](#redirection-duck)
+- [`rendering`](#rendering-duck)
+
+### `browser` Duck
+
+This duck is for reading information about the user's browser. It is particularly helpful on the
+server where this information is not readily available.
+
+**Contents:**
+
+- [State Shape](#state-shape)
+- [Selectors](#selectors)
+  - [`getCookies`](#getCookies)
+- [Action creators](#action-creators)
+  - [`setUserAgent`](#setuseragent)
+  - [`setOrigin`](#setorigin)
+
+#### State Shape
 
 ```js
-import { combineReducers } from 'redux';
-import globalReducers from '@americanexpress/one-app-ducks';
-
-const appReducer = combineReducers({
-  ...globalReducers,
-  ...otherReducers, // Your specific reducers
+const state = new Map({
+  browser: new Map({
+    cookies: new Map({
+      [cookieName]: String, // value for the cookie
+    }),
+    location: new Map({
+      origin: String, // origin of the request
+    }),
+    userAgent: String, // UA string for the browser
+  }),
+  // ...
 });
-
 ```
 
-### `browser`
+#### Selectors
 
-#### `getCookies`
+##### `getCookies`
 
 This [selector](https://github.com/reduxjs/reselect) can be used to access
 cookies both on the server and the client.
@@ -82,15 +114,26 @@ This action creator can take the following argument:
 |---|---|---|
 | `state` | `Object` | (required) current state of the your application |
 
-#### `setUserAgent`
+```js
+import { getCookies } from '@americanexpress/one-app-ducks';
 
-This action creator can be used to set the [user-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
+// ...
+
+const cookies = getCookies(store.getState());
+```
+
+#### Action Creators
+
+##### `setUserAgent`
+
+This action creator can be used to set the [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent).
+It is used directly by One App, and it is unlikely that any module would need it.
 
 This action creator can take the following argument:
 
 | Argument | Type | Description |
 |---|---|---|
-| `user-Agent` | `String` | (required) user-Agent to be set |
+| `User-Agent` | `String` | (required) User-Agent to be set |
 
 ```js
 import { setUserAgent } from '@americanexpress/one-app-ducks';
@@ -98,12 +141,12 @@ import { setUserAgent } from '@americanexpress/one-app-ducks';
 // ...
 
 store.dispatch(setUserAgent('curl/7.35.0?'));
-
 ```
 
-#### `setOrigin`
+##### `setOrigin`
 
 This action creator can be used to set the [Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin).
+It is used directly by One App, and it is unlikely that any module would need it.
 
 This action creator can take the following argument:
 
@@ -120,9 +163,32 @@ store.dispatch(setOrigin('https://example.com'));
 
 ```
 
-### `errors`
+### `error` Duck
 
-#### `applicationError`
+The error duck tracks whether One App is in an error state and what the
+[HTTP status code](https://www.restapitutorial.com/httpstatuscodes.html) is for the error.
+
+**Contents:**
+
+- [State Shape](#state-shape-1)
+- [Action creators](#action-creators-1)
+  - [`applicationError`](#applicationerror)
+  - [`clearError`](#clearerror)
+
+#### State Shape
+
+```js
+const state = new Map({
+  error: new Map({
+    code: Number, // HTTP error code (undefined if not set)
+  }),
+  // ...
+});
+```
+
+#### Action creators
+
+##### `applicationError`
 
 This action creator will put the application in an error state and afterwards
  `addErrorToReport` is dispatched.
@@ -141,9 +207,9 @@ import { applicationError } from '@americanexpress/one-app-ducks';
 store.dispatch(applicationError(500));
 ```
 
-#### `clearError()`
+##### `clearError`
 
-This action creator can be used to clear the error state.
+This action creator can be used to clear the error code.
 
 ```js
 import { clearError } from '@americanexpress/one-app-ducks';
@@ -153,13 +219,51 @@ import { clearError } from '@americanexpress/one-app-ducks';
 store.dispatch(clearError());
 ```
 
-### `errorReporting`
+### `errorReporting` Duck
 
-#### `addErrorToReport`
+The error reporting duck is for sending client side errors to the `errorReportingUrl` configured by
+the  environment variable `ONE_CLIENT_REPORTING_URL`. You can find more documentation on environment
+variables for One App in the [One App documentation](https://github.com/americanexpress/one-app/blob/master/runtime-configuration.md).
+On the server the errors reported are simply logged with the assumption that the underlying
+infrastructure will pick up those logs and ship them to where they can be better kept and analyzed.
+Reported errors will have the following format:
+
+```js
+({
+  msg: String, // Error message (error.message)
+  stack: String, // Error stack (error.stack) IE >= 10
+  href: String, // href to the page reporting the error (client side only)
+  otherData: Object, // Any other data included when adding the error to the report
+});
+```
+
+**Contents:**
+
+- [State Shape](#state-shape-2)
+- [Action creators](#action-creators-2)
+  - [`addErrorToReport`](#adderrortoreport)
+  - [`sendErrorReport`](#senderrorreport)
+
+#### State Shape
+
+```js
+const state = new Map({
+  errorReporting: new Map({
+    queue: List, // Errors to report
+    pending: List, // Errors that have been sent but have not returned a success response yet
+    pendingPromise: Promise, // From the request that posted the pending errors
+    retryWait: Number, // Time (ms) to wait before sending again after a failure
+  }),
+  // ...
+});
+```
+
+#### Action creators
+
+##### `addErrorToReport`
 
 This action creator is for reporting both client side and server side errors
 to your server logs.
-The reports are posted to the url configured here `state.getIn(['config', 'errorReportingUrl'])`.
 
 This action creator can take the following arguments:
 
@@ -179,7 +283,7 @@ store.dispatch(addErrorToReport(error, {
 }));
 ```
 
-#### `sendErrorReport()`
+##### `sendErrorReport`
 
 This action creator is used to send any pending error reports. You can use this along side
 `applicationError` to post your own custom errors.
@@ -190,14 +294,51 @@ import { sendErrorReport } from '@americanexpress/one-app-ducks';
 // ...
 
 store.dispatch(sendErrorReport());
-
 ```
 
-### `intl`
+### `intl` Duck
 
-This refers to internationalization.
+The `intl` duck is for enabling internationalization. It is used to load the language packs bundled
+with each module. See usage in the [`one-app-locale-bundler` README](https://github.com/americanexpress/one-app-cli/tree/master/packages/one-app-locale-bundler#-usage)
+for details on how to include language packs in your module bundles.
 
-#### `loadLanguagePack`
+**Contents:**
+
+- [State Shape](#state-shape-3)
+- [Action creators](#action-creators-3)
+  - [`loadLanguagePack`](#loadlanguagepack)
+  - [`queryLanguagePack`](#querylanguagepack)
+  - [`updateLocale`](#updatelocale)
+  - [`getLocalePack`](#getlocalepack)
+
+#### State Shape
+
+```js
+const state = new Map({
+  intl: new Map({
+    activeLocale: String, // BCP47 code for the locale served to the user
+    languagePacks: new Map({
+      [locale]: new Map({
+        [moduleName]: new Map({
+          data: Map, // Contents of the module's language pack
+          isLoading: Boolean, // Indicates if the language pack request is in flight
+          error: Error, // Error from language pack fetch
+          errorExpiration: Number, // Time for error to expire so that reload attempt can be made
+          _loadedOnServer: Boolean, // Indicates if the language pack was initially loaded on the
+          // server
+          _pendingDeferredForceLoad: Boolean, // Indicates if the client side request of server
+          // loaded language pack is pending
+        }),
+      }),
+    }),
+  }),
+  // ...
+});
+```
+
+#### Action creators
+
+##### `loadLanguagePack`
 
 An async action creator for fetching your module's language pack.
 This action creator can take the following arguments:
@@ -210,7 +351,6 @@ This action creator can take the following arguments:
 | `fallbackLocale` | `String` | If the language pack does not exist, fetches this lang pack instead.  |
 
 ```js
-
 import { loadLanguagePack } from '@americanexpress/one-app-ducks';
 
 // ...
@@ -221,7 +361,7 @@ export default holocronModule({
 })(MyModule);
 ```
 
-#### `queryLanguagePack`
+##### `queryLanguagePack`
 
 `queryLanguagePack` is the [iguazu](https://github.com/americanexpress/iguazu)
 equivalent for `loadLanguagePack`. A fallback locale can be provided if there is
@@ -245,13 +385,14 @@ const loadDataAsProps = ({ store: { dispatch } }) => ({
 });
 ```
 
-#### `updateLocale`
+##### `updateLocale`
 
 This action creator is used to set the active locale for One App.
 The promise will resolve once the
 locale bundle (containing locale data for `Intl.js`,
 [`React Intl`](https://www.npmjs.com/package/react-intl)) and
-[`Moment.js`](http://momentjs.com/)) is loaded and the active locale is set. It will reject if [Lean-Intl](https://github.com/sebastian-software/lean-intl) does not have a bundle for the locale.
+[`Moment.js`](http://momentjs.com/)) is loaded and the active locale is set. It will reject if
+[Lean-Intl](https://github.com/sebastian-software/lean-intl) does not have a bundle for the locale.
 
 The locale bundles don't need to be an exact match. For instance setting the
 locale to `'en-XA'` will load `i18n/en.js` and `'zh-Hans-XB'` will load
@@ -269,12 +410,13 @@ import { updateLocale } from '@americanexpress/one-app-ducks';
 // ...
 
 store.dispatch(updateLocale('be-BY'));
-
 ```
 
-#### `getLocalePack`
+##### `getLocalePack`
 
-Similar to `updateLocale`, but will attempt to load the locale of the requested country that is closest to the current active locale.
+Similar to `updateLocale`, but will attempt to load the locale of the requested country that is
+closest to the current active locale. This is used directly by One App, and it is unlikely that any
+module would need it.
 
 This action creator can take the following argument:
 
@@ -288,14 +430,41 @@ import { getLocalePack } from '@americanexpress/one-app-ducks';
 // ...
 
 store.dispatch(getLocalePack('en-GB'));
-
 ```
 
-### `redirection`
+### `redirection` Duck
 
-#### `externalRedirect()`
+The redirection duck is for managing redirection of users. It is particularly useful on the server
+where it is used to send a [`302`](https://www.restapitutorial.com/httpstatuscodes.html) response.
 
-This action creator can be used to redirect a user out of your one app instance either on the server (via 302 response) or on the client.
+**Contents:**
+
+- [State Shape](#state-shape-4)
+- [Action creators](#action-creators-4)
+  - [`externalRedirect`](#externalredirect)
+
+#### State Shape
+
+```js
+const state = new Map({
+  redirection: new Map({
+    destination: String, // Fully qualified external URL to redirect to
+    redirectionInFlight: Boolean, // Indicates redirection has started
+  }),
+  // ...
+});
+```
+
+#### Action creators
+
+##### `externalRedirect`
+
+This action creator can be used to redirect a user out of your one app instance either on the server
+(via 302 response) or on the client.
+
+| Argument | Type | Description |
+|---|---|---|
+| `redirectUrl` | `String` | (required) fully qualified URL to redirect the user to |
 
 ```js
 import { externalRedirect } from '@americanexpress/one-app-ducks';
@@ -303,14 +472,43 @@ import { externalRedirect } from '@americanexpress/one-app-ducks';
 // ...
 
 store.dispatch(externalRedirect('https://example.com'));
-
 ```
 
-### `rendering`
+### `rendering` Duck
 
-#### `setRenderPartialOnly()`
+The rendering duck controls how the server renders the HTML page sent to the client.
+
+**Contents:**
+
+- [State Shape](#state-shape-5)
+- [Action creators](#action-creators-5)
+  - [`setRenderPartialOnly`](#setrenderpartialonly)
+  - [`setDangerouslyDisableScripts`](#setdangerouslydisablescripts)
+  - [`setDangerouslyDisableScriptsAndStyles`](#setdangerouslydisablescriptsandstyles)
+
+#### State Shape
+
+```js
+const state = new Map({
+  rendering: new Map({
+    disableScripts: Boolean, // Indicates if script tags should be omitted from HTML response
+    disableStyles: Boolean, // Indicates if style tags should be omitted from HTML response
+    renderPartialOnly: Boolean, // Indicates if the response should return just the rendered HTML
+    // from the matched module rather than a complete HTML page
+  }),
+  // ...
+});
+```
+
+#### Action creators
+
+##### `setRenderPartialOnly`
 
 Use this action creator to render static markup from a holocron module, rather than a complete page.
+
+| Argument | Type | Description |
+|---|---|---|
+| `renderPartialOnly` | `Boolean` | (required) set whether a partial should be rendered or not |
 
 ```js
 import { setRenderPartialOnly } from '@americanexpress/one-app-ducks';
@@ -320,9 +518,13 @@ import { setRenderPartialOnly } from '@americanexpress/one-app-ducks';
 dispatch(setRenderPartialOnly(true));
 ```
 
-#### `setDangerouslyDisableScripts()`
+##### `setDangerouslyDisableScripts`
 
 Use this action creator to disable scripts for being added to the rendered page.
+
+| Argument | Type | Description |
+|---|---|---|
+| `disableScripts` | `Boolean` | (required) set whether scripts should be disabled |
 
 ```js
 import { setDangerouslyDisableScripts } from '@americanexpress/one-app-ducks';
@@ -332,9 +534,13 @@ import { setDangerouslyDisableScripts } from '@americanexpress/one-app-ducks';
 dispatch(setDangerouslyDisableScripts(true));
 ```
 
-#### `setDangerouslyDisableScriptsAndStyles()`
+##### `setDangerouslyDisableScriptsAndStyles`
 
 Use this action creator to disable scripts and styles for being added to the rendered page.
+
+| Argument | Type | Description |
+|---|---|---|
+| `disableScriptsAndStyles` | `Boolean` | (required) set whether both scripts and styles should be disabled |
 
 ```js
 import { setDangerouslyDisableScriptsAndStyles } from '@americanexpress/one-app-ducks';
