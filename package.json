@@ -1,6 +1,6 @@
 {
   "name": "@americanexpress/one-app-ducks",
-  "version": "4.0.0-8",
+  "version": "4.0.0",
   "description": "Globally used redux ducks used within the One App ecosystem.",
   "main": "lib/index.js",
   "homepage": "https://github.com/americanexpress/one-app-ducks",
@@ -21,7 +21,8 @@
     "test": "npm run test:unit",
     "prepare": "npm run build",
     "test:git-history": "commitlint --from origin/master --to HEAD",
-    "posttest": "npm run test:lint && npm run test:git-history"
+    "test:lockfile": "lockfile-lint -p package-lock.json -t npm -a npm -o https: -c -i",
+    "posttest": "npm run test:lint && npm run test:git-history && npm run test:lockfile"
   },
   "contributors": [
     "Andres Escobar <Andres.Escobar@aexp.com> (https://github.com/anescobar1991)",
@@ -82,6 +83,7 @@
     "husky": "^3.0.9",
     "jest": "^24.9.0",
     "jest-fetch-mock": "^2.1.2",
+    "lockfile-lint": "^3.0.8",
     "lolex": "^1.4.0",
     "mkdirp": "^0.5.1",
     "react": "^16.0.0",
