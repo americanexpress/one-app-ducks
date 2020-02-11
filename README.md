@@ -18,7 +18,6 @@ Want to get paid for your contributions to `one-app-ducks`?
 * [Features](#-features)
 * [Usage](#-usage)
 * [API](#%EF%B8%8F-api)
-* [Available Scripts](#-available-scripts)
 * [Contributing](#-contributing)
 
 ## ✨ Features
@@ -550,29 +549,6 @@ import { setDangerouslyDisableScriptsAndStyles } from '@americanexpress/one-app-
 dispatch(setDangerouslyDisableScriptsAndStyles(true));
 ```
 
-## Available scripts
-
-### `npm run build`
-
-Builds the dependency out to the `lib` directory.
-
-### `npm run lint`
-
-Verifies that the code matches the American Express code style defined in
-[eslint-config-amex](https://github.com/americanexpress/eslint-config-amex).
-
-### `npm run test:unit`
-
-Runs unit tests with [jest](https://jestjs.io/).
-
-### `npm test`
-
-Runs linting, unit tests and commit validation.
-
-### `npm posttest`
-
-Runs linting on the current branch and checks that the commits follow [conventional commits](https://www.conventionalcommits.org/)
-
 ## 🏆 Contributing
 
 We welcome Your interest in the American Express Open Source Community on Github.
@@ -583,7 +559,7 @@ and to recipients of software distributed by American Express, You reserve all
 right, title, and interest, if any, in and to Your Contributions. Please [fill
 out the Agreement](https://cla-assistant.io/americanexpress/one-app-ducks).
 
-Please feel free to open pull requests and see [CONTRIBUTING.md](./CONTRIBUTING.md) for commit formatting details.
+Please feel free to open pull requests and see [CONTRIBUTING.md](./CONTRIBUTING.md) to learn how to get started contributing.
 
 ## 🗝️ License
 
