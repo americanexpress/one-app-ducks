@@ -78,10 +78,10 @@ describe('error duck', () => {
       applicationError('500')(dispatch);
       const err = new Error('application error');
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenCalledWith(addErrorToReport(err, {
+      expect(dispatch).toHaveBeenCalledWith(addErrorToReport(err, JSON.stringify({
         code: '500',
         collectionMethod: 'applicationError',
-      }));
+      })));
     });
 
     it('should report an error if it is included', () => {
@@ -90,11 +90,11 @@ describe('error duck', () => {
       applicationError('500', err, otherData)(dispatch);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(addErrorToReport).toHaveBeenCalled();
-      expect(dispatch).toHaveBeenCalledWith(addErrorToReport(err, {
+      expect(dispatch).toHaveBeenCalledWith(addErrorToReport(err, JSON.stringify({
         ...otherData,
         code: '500',
         collectionMethod: 'applicationError',
-      }));
+      })));
     });
   });
 });
