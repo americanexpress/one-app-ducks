@@ -69,6 +69,8 @@ reducers are `browser`, `error`, `errorReporting`, `intl`, `redirection` and `re
 - [`redirection`](#redirection-duck)
 - [`rendering`](#rendering-duck)
 
+<!--ONE-DOCS-ID id="browser-duck" start-->
+
 ### `browser` Duck
 
 This duck is for reading information about the user's browser. It is particularly helpful on the
@@ -162,6 +164,10 @@ store.dispatch(setOrigin('https://example.com'));
 
 ```
 
+<!--ONE-DOCS-ID end-->
+
+<!--ONE-DOCS-ID id="error-duck" start-->
+
 ### `error` Duck
 
 The error duck tracks whether One App is in an error state and what the
@@ -217,6 +223,10 @@ import { clearError } from '@americanexpress/one-app-ducks';
 
 store.dispatch(clearError());
 ```
+
+<!--ONE-DOCS-ID end-->
+
+<!--ONE-DOCS-ID id="errorReporting-duck" start-->
 
 ### `errorReporting` Duck
 
@@ -294,6 +304,10 @@ import { sendErrorReport } from '@americanexpress/one-app-ducks';
 
 store.dispatch(sendErrorReport());
 ```
+
+<!--ONE-DOCS-ID end-->
+
+<!--ONE-DOCS-ID id="intl-duck" start-->
 
 ### `intl` Duck
 
@@ -431,6 +445,10 @@ import { getLocalePack } from '@americanexpress/one-app-ducks';
 store.dispatch(getLocalePack('en-GB'));
 ```
 
+<!--ONE-DOCS-ID end-->
+
+<!--ONE-DOCS-ID id="redirection-duck" start-->
+
 ### `redirection` Duck
 
 The redirection duck is for managing redirection of users. It is particularly useful on the server
@@ -472,6 +490,10 @@ import { externalRedirect } from '@americanexpress/one-app-ducks';
 
 store.dispatch(externalRedirect('https://example.com'));
 ```
+
+<!--ONE-DOCS-ID end-->
+
+<!--ONE-DOCS-ID id="rendering-duck" start-->
 
 ### `rendering` Duck
 
@@ -548,6 +570,8 @@ import { setDangerouslyDisableScriptsAndStyles } from '@americanexpress/one-app-
 
 dispatch(setDangerouslyDisableScriptsAndStyles(true));
 ```
+
+<!--ONE-DOCS-ID end-->
 
 ## 🏆 Contributing
 
