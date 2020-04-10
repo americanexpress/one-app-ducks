@@ -143,7 +143,7 @@ const getUrl = ({ getState, langPackLocale, componentKey }) => {
   const localeFilename = state.getIn(['config', 'localeFilename']);
 
   return `${[
-    moduleBaseUrl,
+    moduleBaseUrl.replace(/\/$/, ''),
     langPackLocale.toLowerCase(),
     localeFilename || componentKey,
   ].join('/')}.json`;
