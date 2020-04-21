@@ -13,8 +13,9 @@
  */
 
 import { fromJS, Map as iMap } from 'immutable';
-import { getModuleMap } from 'holocron';
+
 import typeScope from '../utils/typeScope';
+import { getModuleBaseUrl } from '../utils/modules';
 
 export const defaultLocale = 'en-US';
 
@@ -138,8 +139,7 @@ const langPackToIguazu = ({ getState, componentKey }) => {
 
 const getUrl = ({ getState, langPackLocale, componentKey }) => {
   const state = getState();
-  const moduleMap = getModuleMap();
-  const moduleBaseUrl = moduleMap.getIn(['modules', componentKey, 'baseUrl']);
+  const moduleBaseUrl = getModuleBaseUrl(componentKey);
   const localeFilename = state.getIn(['config', 'localeFilename']);
 
   return `${[
