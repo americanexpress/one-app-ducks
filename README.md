@@ -1,3 +1,5 @@
+<!--ONE-DOCS-HIDE start-->
+
 <h1 align="center">
   <img src='https://github.com/americanexpress/one-app-ducks/raw/master/one-app-ducks.png' alt="One App Ducks - One Amex" width='50%'/>
 </h1>
@@ -17,7 +19,7 @@ Want to get paid for your contributions to `one-app-ducks`?
 
 * [Features](#-features)
 * [Usage](#-usage)
-* [API](#%EF%B8%8F-api)
+* [API](#%EF%B8%8F-one-app-ducks-api)
 * [Contributing](#-contributing)
 
 ## ✨ Features
@@ -48,8 +50,11 @@ const store = createStore(
   appReducer
 );
 ```
+<!--ONE-DOCS-HIDE end-->
 
-## 🎛️ API
+<!--ONE-DOCS-METADATA title="One App Ducks API" tags="one app ducks,redux,reducers,one app" -->
+
+## 🎛️ One App Ducks API
 
 ### Overview
 
@@ -573,6 +578,8 @@ dispatch(setDangerouslyDisableScriptsAndStyles(true));
 
 <!--ONE-DOCS-ID end-->
 
+<!--ONE-DOCS-HIDE start-->
+
 ## 🏆 Contributing
 
 We welcome Your interest in the American Express Open Source Community on Github.
@@ -594,3 +601,5 @@ Any contributions made under this project will be governed by the [Apache Licens
 
 This project adheres to the [American Express Community Guidelines](./CODE_OF_CONDUCT.md).
 By participating, you are expected to honor these guidelines.
+
+<!--ONE-DOCS-HIDE end-->
