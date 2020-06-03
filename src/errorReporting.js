@@ -41,7 +41,7 @@ export function formatErrorReport(error, otherData) {
     // TODO: use StackTrace to format the stack?
     stack: error && error.stack, // IE >= 10
     href: global.BROWSER ? global.location.href : undefined,
-    otherData,
+    otherData: JSON.stringify(otherData),
   };
 }
 

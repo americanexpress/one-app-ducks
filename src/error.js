@@ -35,11 +35,11 @@ export const clearError = () => ({
 });
 
 export const applicationError = (code, error = new Error('application error'), otherData = {}) => (dispatch) => {
-  dispatch(addErrorToReport(error, JSON.stringify({
+  dispatch(addErrorToReport(error, {
     ...otherData,
     code,
     collectionMethod: 'applicationError',
-  })));
+  }));
 
   dispatch({
     type: APPLICATION_ERROR,
