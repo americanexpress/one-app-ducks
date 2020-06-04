@@ -378,7 +378,7 @@ describe('error reporting', () => {
           msg: testError.message,
           stack: testError.stack,
           href: 'about:blank',
-          otherData: { ...otherData },
+          otherData: JSON.stringify({ ...otherData }),
         },
       ];
 
@@ -489,7 +489,8 @@ describe('error reporting', () => {
     it('should include other data given', () => {
       const otherData = { foo: 'bar' };
       const result = formatErrorReport(testError, otherData);
-      expect(result.otherData).toBe(otherData);
+
+      expect(result.otherData).toBe(JSON.stringify(otherData));
     });
   });
 });
