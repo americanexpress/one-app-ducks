@@ -339,7 +339,7 @@ describe('intl duck', () => {
         holocron.getModuleMap.mockImplementation(() => fromJS({
           modules: {
             'foo-bar': {
-              baseUrl: 'https://example.com/cdn/foo-bar/1.0.0',
+              browser: { url: 'https://example.com/cdn/foo-bar/1.0.0/foo-bar.browser.js' },
             },
           },
         }));
@@ -595,7 +595,7 @@ describe('intl duck', () => {
         holocron.getModuleMap.mockImplementation(() => fromJS({
           modules: {
             'foo-bar': {
-              baseUrl: 'https://example.com/cdn/foo-bar/1.0.0',
+              browser: { url: 'https://example.com/cdn/foo-bar/1.0.0/foo-bar.browser.js' },
             },
           },
         }));
@@ -636,7 +636,7 @@ describe('intl duck', () => {
         holocron.getModuleMap.mockImplementation(() => fromJS({
           modules: {
             'foo-bar': {
-              baseUrl: 'https://example.com/cdn/foo-bar/1.0.0',
+              browser: { url: 'https://example.com/cdn/foo-bar/1.0.0/foo-bar.browser.js' },
             },
           },
         }));
@@ -666,7 +666,7 @@ describe('intl duck', () => {
         holocron.getModuleMap.mockImplementation(() => fromJS({
           modules: {
             'foo-bar': {
-              baseUrl: 'https://example.com/cdn/foo-bar/1.0.0',
+              browser: { url: 'https://example.com/cdn/foo-bar/1.0.0/foo-bar.browser.js' },
             },
           },
         }));
@@ -703,7 +703,7 @@ describe('intl duck', () => {
           holocron.getModuleMap.mockImplementation(() => fromJS({
             modules: {
               'foo-bar': {
-                baseUrl: 'https://example.com/cdn/foo-bar/1.0.0',
+                browser: { url: 'https://example.com/cdn/foo-bar/1.0.0/foo-bar.browser.js' },
               },
             },
           }));
@@ -737,7 +737,7 @@ describe('intl duck', () => {
           holocron.getModuleMap.mockImplementation(() => fromJS({
             modules: {
               'foo-bar': {
-                baseUrl: 'https://example.com/cdn/foo-bar/1.0.0',
+                browser: { url: 'https://example.com/cdn/foo-bar/1.0.0/foo-bar.browser.js' },
               },
             },
           }));
@@ -935,7 +935,7 @@ describe('intl duck', () => {
         holocron.getModuleMap.mockImplementation(() => fromJS({
           modules: {
             frank: {
-              baseUrl: 'https://example.com/cdn/frank/1.0.0',
+              browser: { url: 'https://example.com/cdn/frank/1.0.0/foo-bar.browser.js' },
             },
           },
         }));

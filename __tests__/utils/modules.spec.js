@@ -24,7 +24,7 @@ describe('getModuleBaseUrl', () => {
     getModuleMap.mockImplementationOnce(() => fromJS({
       modules: {
         [moduleName]: {
-          baseUrl,
+          browser: { url: baseUrl },
         },
       },
     }));
@@ -32,10 +32,10 @@ describe('getModuleBaseUrl', () => {
 
   it('should get the baseUrl for a module with a trailing slash and normalizes it', () => {
     const moduleName = 'my-module';
-    const moduleBaseUrl = `https://example.com/modules/${moduleName}/1.0.0/`;
+    const moduleBaseUrl = `https://example.com/modules/${moduleName}/1.0.0/${moduleName}.browser.js`;
     mockGetModuleMapBaseUrl(moduleName, moduleBaseUrl);
 
-    expect(getModuleBaseUrl(moduleName)).toEqual(moduleBaseUrl.slice(0, -1));
+    expect(getModuleBaseUrl(moduleName)).toEqual(moduleBaseUrl.replace(/[^/]+\.js$/i, '').slice(0, -1));
   });
 
   it('should get the baseUrl for a module without a trailing slash', () => {
