@@ -235,7 +235,7 @@ store.dispatch(clearError());
 
 ### `errorReporting` Duck
 
-The error reporting duck is for sending client side errors to the `errorReportingUrl` configured by
+The error reporting duck is for sending client side errors to the `reportingUrl` configured by
 the  environment variable `ONE_CLIENT_REPORTING_URL`. You can find more documentation on environment
 variables for One App in the [One App documentation](https://github.com/americanexpress/one-app/blob/master/runtime-configuration.md).
 On the server the errors reported are simply logged with the assumption that the underlying
