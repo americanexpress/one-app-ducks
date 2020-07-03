@@ -106,7 +106,7 @@ function thenSendErrorReport({
   return promise
     .then(() => {
       const state = getState();
-      const reportingUrl = state.getIn(['config', 'errorReportingUrl']);
+      const reportingUrl = state.getIn(['config', 'reportingUrl']);
       const queue = state.getIn(['errorReporting', 'queue']).toJS();
 
       if (queue.length === 0) {

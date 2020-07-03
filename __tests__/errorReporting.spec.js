@@ -195,7 +195,7 @@ describe('error reporting', () => {
         },
       ];
       const store = mockStore({
-        config: fromJS({ errorReportingUrl: '/home' }),
+        config: fromJS({ reportingUrl: '/home' }),
         errorReporting: fromJS({
           queue,
           pending: [],
@@ -238,7 +238,7 @@ describe('error reporting', () => {
         },
       ];
       const store = mockStore({
-        config: fromJS({ errorReportingUrl: '/home' }),
+        config: fromJS({ reportingUrl: '/home' }),
         errorReporting: fromJS({
           queue,
           pending: [],
@@ -268,7 +268,7 @@ describe('error reporting', () => {
         },
       ];
       const store = mockStore({
-        config: fromJS({ errorReportingUrl: '/home' }),
+        config: fromJS({ reportingUrl: '/home' }),
         errorReporting: fromJS({
           queue,
           pending: [],
@@ -296,7 +296,7 @@ describe('error reporting', () => {
         },
       ];
       const store = mockStore({
-        config: fromJS({ errorReportingUrl: '/home' }),
+        config: fromJS({ reportingUrl: '/home' }),
         errorReporting: fromJS({
           queue,
           pending: [],
@@ -330,7 +330,7 @@ describe('error reporting', () => {
       ];
       const pendingPromise = new Promise((res) => { resolvePendingPromise = res; });
       const store = mockStore({
-        config: fromJS({ errorReportingUrl: '/home' }),
+        config: fromJS({ reportingUrl: '/home' }),
         errorReporting: fromJS({
           queue,
           pending: [],
@@ -363,7 +363,7 @@ describe('error reporting', () => {
 
       const store = createStore(
         combineReducers({
-          config: () => fromJS({ errorReportingUrl: '/home' }),
+          config: () => fromJS({ reportingUrl: '/home' }),
           errorReporting: reducer,
         }),
         applyMiddleware(thunk.withExtraArgument({ fetchClient: fetch }))
@@ -399,7 +399,7 @@ describe('error reporting', () => {
       expect.assertions(1);
       const store = createStore(
         combineReducers({
-          config: () => fromJS({ errorReportingUrl: '/home' }),
+          config: () => fromJS({ reportingUrl: '/home' }),
           errorReporting: reducer,
         }),
         applyMiddleware(thunk.withExtraArgument({ fetchClient: fetch }))
@@ -415,7 +415,7 @@ describe('error reporting', () => {
         });
     });
 
-    it('should use the errorReportingUrl config', () => {
+    it('should use the reportingUrl config', () => {
       expect.assertions(2);
 
       const testError = { message: 'test error' };
@@ -424,7 +424,7 @@ describe('error reporting', () => {
 
       const store = createStore(
         combineReducers({
-          config: () => fromJS({ errorReportingUrl }),
+          config: () => fromJS({ reportingUrl: errorReportingUrl }),
           errorReporting: reducer,
         }),
         applyMiddleware(thunk.withExtraArgument({ fetchClient: fetch }))
