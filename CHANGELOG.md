@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/americanexpress/one-app-ducks/compare/v4.1.0...v4.1.1) (2020-07-03)
+
+
+### Bug Fixes
+
+* **errorReporting:** use right url from config to send client errors to ([#16](https://github.com/americanexpress/one-app-ducks/issues/16)) ([bbea027](https://github.com/americanexpress/one-app-ducks/commit/bbea027e5c08451899398f7edaf05cbea78ec7f3))
+
 # [4.1.0](https://github.com/americanexpress/one-app-ducks/compare/v4.0.1...v4.1.0) (2020-06-04)
 
 
