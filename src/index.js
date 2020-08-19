@@ -26,6 +26,7 @@ import rendering, {
   setDangerouslyDisableScripts,
   setDangerouslyDisableScriptsAndStyles,
   setRenderPartialOnly,
+  setRenderTextOnly,
 } from './rendering';
 
 export default {
@@ -64,4 +65,5 @@ export {
   setDangerouslyDisableScripts,
   setDangerouslyDisableScriptsAndStyles,
   setRenderPartialOnly,
+  setRenderTextOnly,
 };

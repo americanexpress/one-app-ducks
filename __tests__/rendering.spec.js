@@ -16,10 +16,11 @@ import reducer, {
   SET_DANGEROUSLY_DISABLE_SCRIPTS,
   SET_DANGEROUSLY_DISABLE_SCRIPTS_AND_STYLES,
   SET_RENDER_PARTIAL_ONLY,
+  SET_RENDER_TEXT_ONLY,
   initialState,
   setDangerouslyDisableScripts,
   setDangerouslyDisableScriptsAndStyles,
-  setRenderPartialOnly,
+  setRenderPartialOnly, setRenderTextOnly,
 } from '../src/rendering';
 
 describe('rendering', () => {
@@ -34,6 +35,7 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: false,
         renderPartialOnly: false,
+        renderTextOnly: false,
       });
     });
 
@@ -47,6 +49,7 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: true,
         renderPartialOnly: false,
+        renderTextOnly: false,
       });
     });
 
@@ -60,6 +63,21 @@ describe('rendering', () => {
         disableScripts: false,
         disableStyles: false,
         renderPartialOnly: true,
+        renderTextOnly: false,
+      });
+    });
+
+    it('sets renderTextOnly flag on SET_RENDER_TEXT_ONLY type', () => {
+      const result = reducer(undefined, {
+        type: SET_RENDER_TEXT_ONLY,
+        renderTextOnly: true,
+      });
+
+      expect(result.toJS()).toEqual({
+        disableScripts: false,
+        disableStyles: false,
+        renderPartialOnly: false,
+        renderTextOnly: true,
       });
     });
 
@@ -102,6 +120,17 @@ describe('rendering', () => {
         expect(result).toEqual({
           type: SET_RENDER_PARTIAL_ONLY,
           renderPartialOnly,
+        });
+      });
+    });
+
+    describe('setRenderTextOnly', () => {
+      it('returns action payload', () => {
+        const renderTextOnly = true;
+        const result = setRenderTextOnly(renderTextOnly);
+        expect(result).toEqual({
+          type: SET_RENDER_TEXT_ONLY,
+          renderTextOnly,
         });
       });
     });

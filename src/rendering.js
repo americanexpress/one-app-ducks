@@ -18,11 +18,13 @@ import typeScope from './utils/typeScope';
 export const SET_DANGEROUSLY_DISABLE_SCRIPTS = `${typeScope}/render/SET_DANGEROUSLY_DISABLE_SCRIPTS`;
 export const SET_DANGEROUSLY_DISABLE_SCRIPTS_AND_STYLES = `${typeScope}/render/SET_DANGEROUSLY_DISABLE_SCRIPTS_AND_STYLES`;
 export const SET_RENDER_PARTIAL_ONLY = `${typeScope}/render/SET_RENDER_PARTIAL_ONLY`;
+export const SET_RENDER_TEXT_ONLY = `${typeScope}/render/SET_RENDER_TEXT_ONLY`;
 
 export const initialState = iMap({
   disableStyles: false,
   disableScripts: false,
   renderPartialOnly: false,
+  renderTextOnly: false,
 });
 
 export default function reducer(state = initialState, action) {
@@ -35,6 +37,8 @@ export default function reducer(state = initialState, action) {
         .set('disableScripts', action.disableScriptsAndStyles);
     case SET_RENDER_PARTIAL_ONLY:
       return state.set('renderPartialOnly', action.renderPartialOnly);
+    case SET_RENDER_TEXT_ONLY:
+      return state.set('renderTextOnly', action.renderTextOnly);
     default:
       return state;
   }
@@ -53,4 +57,9 @@ export const setDangerouslyDisableScriptsAndStyles = (disableScriptsAndStyles) =
 export const setRenderPartialOnly = (renderPartialOnly) => ({
   type: SET_RENDER_PARTIAL_ONLY,
   renderPartialOnly,
+});
+
+export const setRenderTextOnly = (renderTextOnly) => ({
+  type: SET_RENDER_TEXT_ONLY,
+  renderTextOnly,
 });

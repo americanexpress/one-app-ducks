@@ -31,6 +31,7 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
+    "renderTextOnly": false,
   },
 }
 `;
@@ -64,6 +65,7 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
+    "renderTextOnly": false,
   },
 }
 `;
@@ -85,6 +87,7 @@ Array [
   "setDangerouslyDisableScripts",
   "setDangerouslyDisableScriptsAndStyles",
   "setRenderPartialOnly",
+  "setRenderTextOnly",
   "default",
 ]
 `;
