@@ -31,7 +31,11 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
-    "renderTextOnly": false,
+    "renderTextOnly": Immutable.Map {
+      "setTextOnly": false,
+      "tagReplacement": "",
+      "allowedTags": Immutable.List [],
+    },
   },
 }
 `;
@@ -65,7 +69,11 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
-    "renderTextOnly": false,
+    "renderTextOnly": Immutable.Map {
+      "setTextOnly": false,
+      "tagReplacement": "",
+      "allowedTags": Immutable.List [],
+    },
   },
 }
 `;

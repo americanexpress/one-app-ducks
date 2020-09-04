@@ -35,7 +35,7 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: false,
         renderPartialOnly: false,
-        renderTextOnly: false,
+        renderTextOnly: { setTextOnly: false, tagReplacement: '', allowedTags: [] },
       });
     });
 
@@ -49,7 +49,7 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: true,
         renderPartialOnly: false,
-        renderTextOnly: false,
+        renderTextOnly: { setTextOnly: false, tagReplacement: '', allowedTags: [] },
       });
     });
 
@@ -63,21 +63,41 @@ describe('rendering', () => {
         disableScripts: false,
         disableStyles: false,
         renderPartialOnly: true,
-        renderTextOnly: false,
+        renderTextOnly: { setTextOnly: false, tagReplacement: '', allowedTags: [] },
       });
     });
 
     it('sets renderTextOnly flag on SET_RENDER_TEXT_ONLY type', () => {
       const result = reducer(undefined, {
         type: SET_RENDER_TEXT_ONLY,
-        renderTextOnly: true,
+        setTextOnly: true,
+        tagReplacement: '',
+        allowedTags: [],
       });
 
       expect(result.toJS()).toEqual({
         disableScripts: false,
         disableStyles: false,
         renderPartialOnly: false,
-        renderTextOnly: true,
+        renderTextOnly: { setTextOnly: true, tagReplacement: '', allowedTags: [] },
+      });
+    });
+
+    it('sets renderTextOnly flag on SET_RENDER_TEXT_ONLY type and adds additional options', () => {
+      const tagReplacement = '\n';
+      const allowedTags = ['<a>', '<p>'];
+      const result = reducer(undefined, {
+        type: SET_RENDER_TEXT_ONLY,
+        setTextOnly: true,
+        tagReplacement,
+        allowedTags,
+      });
+
+      expect(result.toJS()).toEqual({
+        disableScripts: false,
+        disableStyles: false,
+        renderPartialOnly: false,
+        renderTextOnly: { setTextOnly: true, tagReplacement, allowedTags },
       });
     });
 
@@ -126,11 +146,21 @@ describe('rendering', () => {
 
     describe('setRenderTextOnly', () => {
       it('returns action payload', () => {
-        const renderTextOnly = true;
-        const result = setRenderTextOnly(renderTextOnly);
+        const result = setRenderTextOnly(true, '\n', ['<a>', '<p>']);
         expect(result).toEqual({
           type: SET_RENDER_TEXT_ONLY,
-          renderTextOnly,
+          setTextOnly: true,
+          tagReplacement: '\n',
+          allowedTags: ['<a>', '<p>'],
+        });
+      });
+      it('returns action payload with default options for tagReplacement and allowedTags', () => {
+        const result = setRenderTextOnly(true);
+        expect(result).toEqual({
+          type: SET_RENDER_TEXT_ONLY,
+          setTextOnly: true,
+          tagReplacement: '',
+          allowedTags: [],
         });
       });
     });
