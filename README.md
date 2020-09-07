@@ -509,6 +509,7 @@ The rendering duck controls how the server renders the HTML page sent to the cli
 - [State Shape](#state-shape-5)
 - [Action creators](#action-creators-5)
   - [`setRenderPartialOnly`](#setrenderpartialonly)
+  - [`setRenderTextOnly`](#setrendertextOnly)
   - [`setDangerouslyDisableScripts`](#setdangerouslydisablescripts)
   - [`setDangerouslyDisableScriptsAndStyles`](#setdangerouslydisablescriptsandstyles)
 
@@ -521,6 +522,11 @@ const state = new Map({
     disableStyles: Boolean, // Indicates if style tags should be omitted from HTML response
     renderPartialOnly: Boolean, // Indicates if the response should return just the rendered HTML
     // from the matched module rather than a complete HTML page
+    renderTextOnly: new Map({
+      setTextOnly: Boolean, // Indicates if HTML tags should be removed from the HTML response
+      tagReplacement: String, // Replace html tags with the character passed to this option.
+      allowedTags: List, // List of HTML tags that should not be removed from the HTML response
+    }),
   }),
   // ...
 });
@@ -542,6 +548,24 @@ import { setRenderPartialOnly } from '@americanexpress/one-app-ducks';
 // ...
 
 dispatch(setRenderPartialOnly(true));
+```
+
+##### `setRenderTextOnly`
+
+Use this action creator to render text only from a holocron module, rather than a HTML.
+
+| Argument | Type | Description |
+|---|---|---|
+| `setTextOnly` | `Boolean` | (required) set whether to return text instead of HTML |
+| `tagReplacement` | `String` | Replace html tags with the character passed to this option i.e. '/n'. Defaults to empty string. |
+| `allowedTags` | `Array` | Comma separated list of HTML tags that are allowed to remain in the text response i.e. `['a','<strong>']`. Defaults to empty array. |
+
+```js
+import { setRenderTextOnly } from '@americanexpress/one-app-ducks';
+
+// ...
+
+dispatch(setRenderTextOnly(true, '\n', ['a']));
 ```
 
 ##### `setDangerouslyDisableScripts`
