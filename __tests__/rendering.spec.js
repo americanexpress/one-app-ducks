@@ -35,7 +35,7 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: false,
         renderPartialOnly: false,
-        renderTextOnly: { setTextOnly: false, tagReplacement: '', allowedTags: [] },
+        renderTextOnly: { setTextOnly: false, htmlTagReplacement: '', allowedHtmlTags: [] },
       });
     });
 
@@ -49,7 +49,7 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: true,
         renderPartialOnly: false,
-        renderTextOnly: { setTextOnly: false, tagReplacement: '', allowedTags: [] },
+        renderTextOnly: { setTextOnly: false, htmlTagReplacement: '', allowedHtmlTags: [] },
       });
     });
 
@@ -63,7 +63,7 @@ describe('rendering', () => {
         disableScripts: false,
         disableStyles: false,
         renderPartialOnly: true,
-        renderTextOnly: { setTextOnly: false, tagReplacement: '', allowedTags: [] },
+        renderTextOnly: { setTextOnly: false, htmlTagReplacement: '', allowedHtmlTags: [] },
       });
     });
 
@@ -71,33 +71,33 @@ describe('rendering', () => {
       const result = reducer(undefined, {
         type: SET_RENDER_TEXT_ONLY,
         setTextOnly: true,
-        tagReplacement: '',
-        allowedTags: [],
+        htmlTagReplacement: '',
+        allowedHtmlTags: [],
       });
 
       expect(result.toJS()).toEqual({
         disableScripts: false,
         disableStyles: false,
         renderPartialOnly: false,
-        renderTextOnly: { setTextOnly: true, tagReplacement: '', allowedTags: [] },
+        renderTextOnly: { setTextOnly: true, htmlTagReplacement: '', allowedHtmlTags: [] },
       });
     });
 
     it('sets renderTextOnly flag on SET_RENDER_TEXT_ONLY type and adds additional options', () => {
-      const tagReplacement = '\n';
-      const allowedTags = ['<a>', '<p>'];
+      const htmlTagReplacement = '\n';
+      const allowedHtmlTags = ['<a>', '<p>'];
       const result = reducer(undefined, {
         type: SET_RENDER_TEXT_ONLY,
         setTextOnly: true,
-        tagReplacement,
-        allowedTags,
+        htmlTagReplacement,
+        allowedHtmlTags,
       });
 
       expect(result.toJS()).toEqual({
         disableScripts: false,
         disableStyles: false,
         renderPartialOnly: false,
-        renderTextOnly: { setTextOnly: true, tagReplacement, allowedTags },
+        renderTextOnly: { setTextOnly: true, htmlTagReplacement, allowedHtmlTags },
       });
     });
 
@@ -150,17 +150,17 @@ describe('rendering', () => {
         expect(result).toEqual({
           type: SET_RENDER_TEXT_ONLY,
           setTextOnly: true,
-          tagReplacement: '\n',
-          allowedTags: ['<a>', '<p>'],
+          htmlTagReplacement: '\n',
+          allowedHtmlTags: ['<a>', '<p>'],
         });
       });
-      it('returns action payload with default options for tagReplacement and allowedTags', () => {
+      it('returns action payload with default options for htmlTagReplacement and allowedHtmlTags', () => {
         const result = setRenderTextOnly(true);
         expect(result).toEqual({
           type: SET_RENDER_TEXT_ONLY,
           setTextOnly: true,
-          tagReplacement: '',
-          allowedTags: [],
+          htmlTagReplacement: '',
+          allowedHtmlTags: [],
         });
       });
     });

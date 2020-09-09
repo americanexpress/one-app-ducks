@@ -12,7 +12,7 @@
  * under the License.
  */
 
-import { fromJS, Map as iMap } from 'immutable';
+import { fromJS } from 'immutable';
 import typeScope from './utils/typeScope';
 
 export const SET_DANGEROUSLY_DISABLE_SCRIPTS = `${typeScope}/render/SET_DANGEROUSLY_DISABLE_SCRIPTS`;
@@ -20,11 +20,11 @@ export const SET_DANGEROUSLY_DISABLE_SCRIPTS_AND_STYLES = `${typeScope}/render/S
 export const SET_RENDER_PARTIAL_ONLY = `${typeScope}/render/SET_RENDER_PARTIAL_ONLY`;
 export const SET_RENDER_TEXT_ONLY = `${typeScope}/render/SET_RENDER_TEXT_ONLY`;
 
-export const initialState = iMap({
+export const initialState = fromJS({
   disableStyles: false,
   disableScripts: false,
   renderPartialOnly: false,
-  renderTextOnly: fromJS({ setTextOnly: false, tagReplacement: '', allowedTags: [] }),
+  renderTextOnly: { setTextOnly: false, htmlTagReplacement: '', allowedHtmlTags: [] },
 });
 
 export default function reducer(state = initialState, action) {
@@ -40,8 +40,8 @@ export default function reducer(state = initialState, action) {
     case SET_RENDER_TEXT_ONLY:
       return state.withMutations((newState) => newState
         .setIn(['renderTextOnly', 'setTextOnly'], action.setTextOnly)
-        .setIn(['renderTextOnly', 'tagReplacement'], action.tagReplacement)
-        .setIn(['renderTextOnly', 'allowedTags'], action.allowedTags));
+        .setIn(['renderTextOnly', 'htmlTagReplacement'], action.htmlTagReplacement)
+        .setIn(['renderTextOnly', 'allowedHtmlTags'], action.allowedHtmlTags));
     default:
       return state;
   }
@@ -62,9 +62,9 @@ export const setRenderPartialOnly = (renderPartialOnly) => ({
   renderPartialOnly,
 });
 
-export const setRenderTextOnly = (setTextOnly, tagReplacement = '', allowedTags = []) => ({
+export const setRenderTextOnly = (setTextOnly, htmlTagReplacement = '', allowedHtmlTags = []) => ({
   type: SET_RENDER_TEXT_ONLY,
   setTextOnly,
-  tagReplacement,
-  allowedTags,
+  htmlTagReplacement,
+  allowedHtmlTags,
 });
