@@ -24,7 +24,8 @@ export const initialState = fromJS({
   disableStyles: false,
   disableScripts: false,
   renderPartialOnly: false,
-  renderTextOnly: { setTextOnly: false, htmlTagReplacement: '', allowedHtmlTags: [] },
+  renderTextOnly: false,
+  renderTextOnlyOptions: { htmlTagReplacement: '', allowedHtmlTags: [] },
 });
 
 export default function reducer(state = initialState, action) {
@@ -39,9 +40,9 @@ export default function reducer(state = initialState, action) {
       return state.set('renderPartialOnly', action.renderPartialOnly);
     case SET_RENDER_TEXT_ONLY:
       return state.withMutations((newState) => newState
-        .setIn(['renderTextOnly', 'setTextOnly'], action.setTextOnly)
-        .setIn(['renderTextOnly', 'htmlTagReplacement'], action.htmlTagReplacement)
-        .setIn(['renderTextOnly', 'allowedHtmlTags'], action.allowedHtmlTags));
+        .set('renderTextOnly', action.renderTextOnly)
+        .setIn(['renderTextOnlyOptions', 'htmlTagReplacement'], action.options.htmlTagReplacement)
+        .setIn(['renderTextOnlyOptions', 'allowedHtmlTags'], action.options.allowedHtmlTags));
     default:
       return state;
   }
@@ -62,9 +63,8 @@ export const setRenderPartialOnly = (renderPartialOnly) => ({
   renderPartialOnly,
 });
 
-export const setRenderTextOnly = (setTextOnly, htmlTagReplacement = '', allowedHtmlTags = []) => ({
+export const setRenderTextOnly = (renderTextOnly, options) => ({
   type: SET_RENDER_TEXT_ONLY,
-  setTextOnly,
-  htmlTagReplacement,
-  allowedHtmlTags,
+  renderTextOnly,
+  options: { htmlTagReplacement: '', allowedHtmlTags: [], ...options },
 });

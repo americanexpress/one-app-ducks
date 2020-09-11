@@ -522,9 +522,9 @@ const state = new Map({
     disableStyles: Boolean, // Indicates if style tags should be omitted from HTML response
     renderPartialOnly: Boolean, // Indicates if the response should return just the rendered HTML
     // from the matched module rather than a complete HTML page
-    renderTextOnly: new Map({
-      setTextOnly: Boolean, // Indicates if HTML tags should be removed from the HTML response
-      htmlTagReplacement: String, // Replace html tags with the character passed to this option.
+    renderTextOnly: Boolean, // Indicates if HTML tags should be removed from the HTML response
+    renderTextOnlyOptions: new Map({
+      htmlTagReplacement: String, // Replace all html tags with the character passed to this option.
       allowedHtmlTags: List, // List of HTML tags that should not be removed from the HTML response
     }),
   }),
@@ -556,16 +556,17 @@ Use this action creator to render text only from a holocron module, rather than 
 
 | Argument | Type | Description |
 |---|---|---|
-| `setTextOnly` | `Boolean` | (required) set whether to return text instead of HTML |
-| `htmlTagReplacement` | `String` | Replace html tags with the character passed to this option i.e. '/n'. Defaults to empty string. |
-| `allowedHtmlTags` | `Array` | Comma separated list of HTML tags that are allowed to remain in the text response i.e. `['a','<strong>']`. Defaults to empty array. |
+| `renderTextOnly` | `Boolean` | (required) set whether to return text instead of HTML |
+| `options` | `Object` | Replace html tags with the character passed to this option i.e. '/n'. Defaults to empty string. |
+| `options.htmlTagReplacement` | `String` | Replace html tags with the character passed to this option i.e. '/n'. Defaults to empty string. |
+| `options.allowedHtmlTags` | `Array` | Comma separated list of HTML tags that are allowed to remain in the text response i.e. `['a','strong']`. Defaults to empty array. |
 
 ```js
 import { setRenderTextOnly } from '@americanexpress/one-app-ducks';
 
 // ...
 
-dispatch(setRenderTextOnly(true, '\n', ['a']));
+dispatch(setRenderTextOnly(true, { htmlTagReplacement: '\n', allowedHtmlTags: ['a'] }));
 ```
 
 ##### `setDangerouslyDisableScripts`

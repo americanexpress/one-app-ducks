@@ -31,8 +31,8 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
-    "renderTextOnly": Immutable.Map {
-      "setTextOnly": false,
+    "renderTextOnly": false,
+    "renderTextOnlyOptions": Immutable.Map {
       "htmlTagReplacement": "",
       "allowedHtmlTags": Immutable.List [],
     },
@@ -69,8 +69,8 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
-    "renderTextOnly": Immutable.Map {
-      "setTextOnly": false,
+    "renderTextOnly": false,
+    "renderTextOnlyOptions": Immutable.Map {
       "htmlTagReplacement": "",
       "allowedHtmlTags": Immutable.List [],
     },
