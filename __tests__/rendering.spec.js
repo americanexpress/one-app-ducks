@@ -20,7 +20,8 @@ import reducer, {
   initialState,
   setDangerouslyDisableScripts,
   setDangerouslyDisableScriptsAndStyles,
-  setRenderPartialOnly, setRenderTextOnly,
+  setRenderPartialOnly,
+  setRenderTextOnly,
 } from '../src/rendering';
 
 describe('rendering', () => {
