@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/americanexpress/one-app-ducks/compare/v4.1.1...v4.2.0) (2020-09-23)
+
+
+### Features
+
+* **rendering:** add setTextOnly duck ([#17](https://github.com/americanexpress/one-app-ducks/issues/17)) ([a18a2df](https://github.com/americanexpress/one-app-ducks/commit/a18a2dfdbad65da68f0acd449b5cc8fa6760af96))
+
 ## [4.1.1](https://github.com/americanexpress/one-app-ducks/compare/v4.1.0...v4.1.1) (2020-07-03)
 
 
