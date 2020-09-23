@@ -16,10 +16,12 @@ import reducer, {
   SET_DANGEROUSLY_DISABLE_SCRIPTS,
   SET_DANGEROUSLY_DISABLE_SCRIPTS_AND_STYLES,
   SET_RENDER_PARTIAL_ONLY,
+  SET_RENDER_TEXT_ONLY,
   initialState,
   setDangerouslyDisableScripts,
   setDangerouslyDisableScriptsAndStyles,
   setRenderPartialOnly,
+  setRenderTextOnly,
 } from '../src/rendering';
 
 describe('rendering', () => {
@@ -34,6 +36,8 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: false,
         renderPartialOnly: false,
+        renderTextOnly: false,
+        renderTextOnlyOptions: { htmlTagReplacement: '', allowedHtmlTags: [] },
       });
     });
 
@@ -47,6 +51,8 @@ describe('rendering', () => {
         disableScripts: true,
         disableStyles: true,
         renderPartialOnly: false,
+        renderTextOnly: false,
+        renderTextOnlyOptions: { htmlTagReplacement: '', allowedHtmlTags: [] },
       });
     });
 
@@ -60,6 +66,42 @@ describe('rendering', () => {
         disableScripts: false,
         disableStyles: false,
         renderPartialOnly: true,
+        renderTextOnly: false,
+        renderTextOnlyOptions: { htmlTagReplacement: '', allowedHtmlTags: [] },
+      });
+    });
+
+    it('sets renderTextOnly flag on SET_RENDER_TEXT_ONLY type', () => {
+      const result = reducer(undefined, {
+        type: SET_RENDER_TEXT_ONLY,
+        renderTextOnly: true,
+        options: { htmlTagReplacement: '', allowedHtmlTags: [] },
+      });
+
+      expect(result.toJS()).toEqual({
+        disableScripts: false,
+        disableStyles: false,
+        renderPartialOnly: false,
+        renderTextOnly: true,
+        renderTextOnlyOptions: { htmlTagReplacement: '', allowedHtmlTags: [] },
+      });
+    });
+
+    it('sets renderTextOnly flag on SET_RENDER_TEXT_ONLY type and adds additional options', () => {
+      const htmlTagReplacement = '\n';
+      const allowedHtmlTags = ['a', 'p'];
+      const result = reducer(undefined, {
+        type: SET_RENDER_TEXT_ONLY,
+        renderTextOnly: true,
+        options: { htmlTagReplacement, allowedHtmlTags },
+      });
+
+      expect(result.toJS()).toEqual({
+        disableScripts: false,
+        disableStyles: false,
+        renderPartialOnly: false,
+        renderTextOnly: true,
+        renderTextOnlyOptions: { htmlTagReplacement, allowedHtmlTags },
       });
     });
 
@@ -102,6 +144,25 @@ describe('rendering', () => {
         expect(result).toEqual({
           type: SET_RENDER_PARTIAL_ONLY,
           renderPartialOnly,
+        });
+      });
+    });
+
+    describe('setRenderTextOnly', () => {
+      it('returns action payload', () => {
+        const result = setRenderTextOnly(true, { htmlTagReplacement: '\n', allowedHtmlTags: ['a', 'p'] });
+        expect(result).toEqual({
+          type: SET_RENDER_TEXT_ONLY,
+          renderTextOnly: true,
+          options: { htmlTagReplacement: '\n', allowedHtmlTags: ['a', 'p'] },
+        });
+      });
+      it('returns action payload with default options for htmlTagReplacement and allowedHtmlTags', () => {
+        const result = setRenderTextOnly(true);
+        expect(result).toEqual({
+          type: SET_RENDER_TEXT_ONLY,
+          renderTextOnly: true,
+          options: { htmlTagReplacement: '', allowedHtmlTags: [] },
         });
       });
     });

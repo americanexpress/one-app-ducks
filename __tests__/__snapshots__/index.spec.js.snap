@@ -31,6 +31,11 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
+    "renderTextOnly": false,
+    "renderTextOnlyOptions": Immutable.Map {
+      "htmlTagReplacement": "",
+      "allowedHtmlTags": Immutable.List [],
+    },
   },
 }
 `;
@@ -64,6 +69,11 @@ Immutable.Map {
     "disableStyles": false,
     "disableScripts": false,
     "renderPartialOnly": false,
+    "renderTextOnly": false,
+    "renderTextOnlyOptions": Immutable.Map {
+      "htmlTagReplacement": "",
+      "allowedHtmlTags": Immutable.List [],
+    },
   },
 }
 `;
@@ -85,6 +95,7 @@ Array [
   "setDangerouslyDisableScripts",
   "setDangerouslyDisableScriptsAndStyles",
   "setRenderPartialOnly",
+  "setRenderTextOnly",
   "default",
 ]
 `;
