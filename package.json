@@ -20,7 +20,7 @@
     "test:unit": "jest",
     "test": "npm run test:unit",
     "prepare": "npm run build",
-    "test:git-history": "commitlint --from origin/master --to HEAD",
+    "test:git-history": "commitlint --from origin/main --to HEAD",
     "test:lockfile": "lockfile-lint -p package-lock.json -t npm -a npm -o https: -c -i",
     "posttest": "npm run test:lint && npm run test:git-history && npm run test:lockfile"
   },
@@ -68,10 +68,11 @@
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@semantic-release/changelog": "^3.0.5",
-    "@semantic-release/commit-analyzer": "^6.3.2",
-    "@semantic-release/git": "^7.0.18",
-    "@semantic-release/npm": "^5.3.4",
-    "@semantic-release/release-notes-generator": "^7.3.2",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.1.1",
+    "@semantic-release/npm": "^7.0.6",
+    "@semantic-release/release-notes-generator": "^9.0.1",
     "amex-jest-preset": "^5.0.0",
     "babel-jest": "^24.9.0",
     "babel-preset-amex": "^3.1.0",
@@ -83,7 +84,7 @@
     "husky": "^3.0.9",
     "jest": "^24.9.0",
     "jest-fetch-mock": "^2.1.2",
-    "lockfile-lint": "^3.0.8",
+    "lockfile-lint": "^4.3.7",
     "lolex": "^1.4.0",
     "mkdirp": "^0.5.1",
     "react": "^16.0.0",
@@ -92,7 +93,7 @@
     "redux-mock-store": "^1.0.2",
     "redux-thunk": "^2.0.1",
     "rimraf": "^2.5.3",
-    "semantic-release": "^15.13.31"
+    "semantic-release": "^17.1.2"
   },
   "husky": {
     "hooks": {
@@ -101,6 +102,20 @@
     }
   },
   "release": {
+    "branches": [
+      "+([0-9])?(.{+([0-9]),x}).x",
+      "main",
+      "next",
+      "next-major",
+      {
+        "name": "beta",
+        "prerelease": true
+      },
+      {
+        "name": "alpha",
+        "prerelease": true
+      }
+    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
@@ -108,7 +123,6 @@
       "@semantic-release/npm",
       "@semantic-release/git",
       "@semantic-release/github"
-    ],
-    "branch": "master"
+    ]
   }
 }
