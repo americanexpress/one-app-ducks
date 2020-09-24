@@ -1,11 +1,11 @@
 <!--ONE-DOCS-HIDE start-->
 
 <h1 align="center">
-  <img src='https://github.com/americanexpress/one-app-ducks/raw/master/one-app-ducks.png' alt="One App Ducks - One Amex" width='50%'/>
+  <img src='https://github.com/americanexpress/one-app-ducks/raw/main/one-app-ducks.png' alt="One App Ducks - One Amex" width='50%'/>
 </h1>
 
 [![npm](https://img.shields.io/npm/v/@americanexpress/one-app-ducks)](https://www.npmjs.com/package/@americanexpress/one-app-ducks)
-[![Travis (.org) branch](https://img.shields.io/travis/americanexpress/one-app-ducks/master)](https://travis-ci.org/americanexpress/one-app-ducks)
+![Health Check](https://github.com/americanexpress/one-app-ducks/workflows/Health%20Check/badge.svg)
 
 > [Redux](https://redux.js.org/) [ducks](https://github.com/erikras/ducks-modular-redux) used within
 > the One App ecosystem.
@@ -237,7 +237,7 @@ store.dispatch(clearError());
 
 The error reporting duck is for sending client side errors to the `reportingUrl` configured by
 the  environment variable `ONE_CLIENT_REPORTING_URL`. You can find more documentation on environment
-variables for One App in the [One App documentation](https://github.com/americanexpress/one-app/blob/master/runtime-configuration.md).
+variables for One App in the [One App documentation](https://github.com/americanexpress/one-app/blob/main/runtime-configuration.md).
 On the server the errors reported are simply logged with the assumption that the underlying
 infrastructure will pick up those logs and ship them to where they can be better kept and analyzed.
 Reported errors will have the following format:
@@ -317,7 +317,7 @@ store.dispatch(sendErrorReport());
 ### `intl` Duck
 
 The `intl` duck is for enabling internationalization. It is used to load the language packs bundled
-with each module. See usage in the [`one-app-locale-bundler` README](https://github.com/americanexpress/one-app-cli/tree/master/packages/one-app-locale-bundler#-usage)
+with each module. See usage in the [`one-app-locale-bundler` README](https://github.com/americanexpress/one-app-cli/tree/main/packages/one-app-locale-bundler#-usage)
 for details on how to include language packs in your module bundles.
 
 **Contents:**
