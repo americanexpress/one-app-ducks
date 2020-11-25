@@ -1,3 +1,10 @@
+## [4.2.1](https://github.com/americanexpress/one-app-ducks/compare/v4.2.0...v4.2.1) (2020-11-25)
+
+
+### Bug Fixes
+
+* **error-reporting:** truncated server console log ([86da68a](https://github.com/americanexpress/one-app-ducks/commit/86da68a2d6757a103690cf1b358c5611f2b31bad))
+
 # [4.2.0](https://github.com/americanexpress/one-app-ducks/compare/v4.1.1...v4.2.0) (2020-09-23)
 
 
