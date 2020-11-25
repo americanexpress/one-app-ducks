@@ -14,6 +14,7 @@
 
 /* eslint no-bitwise: ["error", { "int32Hint": true }] */
 import { fromJS } from 'immutable';
+import util from 'util';
 import typeScope from './utils/typeScope';
 
 // action constants
@@ -41,7 +42,7 @@ export function formatErrorReport(error, otherData) {
     // TODO: use StackTrace to format the stack?
     stack: error && error.stack, // IE >= 10
     href: global.BROWSER ? global.location.href : undefined,
-    otherData: JSON.stringify(otherData),
+    otherData,
   };
 }
 
@@ -96,7 +97,9 @@ function getPendingPromise(state) {
 }
 
 export function serverSideError(error) {
-  console.error(error);
+  // nodejs console truncates output by default
+  // https://nodejs.org/api/util.html#util_util_inspect_object_options
+  console.error(util.inspect(error, false, null, true));
   return Promise.resolve({ thankYou: true });
 }
 

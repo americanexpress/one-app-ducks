@@ -19,6 +19,7 @@ import { combineReducers } from 'redux-immutable';
 import configureStore from 'redux-mock-store';
 
 // Module under test
+import util from 'util';
 import reducer, {
   serverSideError,
   addErrorToReport,
@@ -310,7 +311,7 @@ describe('error reporting', () => {
 
       return store.dispatch(sendErrorReport())
         .then((data) => {
-          expect(consoleErrorSpy).toHaveBeenCalledWith(queue);
+          expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(queue, false, null, true));
           expect(store.getActions().length).toBe(2);
           expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
           expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_SUCCESS);
@@ -378,7 +379,7 @@ describe('error reporting', () => {
           msg: testError.message,
           stack: testError.stack,
           href: 'about:blank',
-          otherData: JSON.stringify({ ...otherData }),
+          otherData,
         },
       ];
 
@@ -449,7 +450,7 @@ describe('error reporting', () => {
       expect.assertions(1);
       const err = new Error('this is a test');
       return serverSideError(err).then(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(err);
+        expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(err, false, null, true));
       });
     });
 
@@ -490,7 +491,7 @@ describe('error reporting', () => {
       const otherData = { foo: 'bar' };
       const result = formatErrorReport(testError, otherData);
 
-      expect(result.otherData).toBe(JSON.stringify(otherData));
+      expect(result.otherData).toBe(otherData);
     });
   });
 });
