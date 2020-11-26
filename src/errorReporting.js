@@ -99,7 +99,7 @@ function getPendingPromise(state) {
 export function serverSideError(error) {
   // nodejs console truncates output by default
   // https://nodejs.org/api/util.html#util_util_inspect_object_options
-  console.error(util.inspect(error, false, null, true));
+  console.error(util.inspect(error, false, 10, true));
   return Promise.resolve({ thankYou: true });
 }
 
