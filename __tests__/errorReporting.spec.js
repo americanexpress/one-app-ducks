@@ -311,7 +311,7 @@ describe('error reporting', () => {
 
       return store.dispatch(sendErrorReport())
         .then((data) => {
-          expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(queue, false, null, true));
+          expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(queue, false, 10, true));
           expect(store.getActions().length).toBe(2);
           expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
           expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_SUCCESS);
@@ -450,7 +450,7 @@ describe('error reporting', () => {
       expect.assertions(1);
       const err = new Error('this is a test');
       return serverSideError(err).then(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(err, false, null, true));
+        expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(err, false, 10, true));
       });
     });
 
