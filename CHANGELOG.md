@@ -1,3 +1,10 @@
+## [4.2.2](https://github.com/americanexpress/one-app-ducks/compare/v4.2.1...v4.2.2) (2020-12-02)
+
+
+### Bug Fixes
+
+* **error-reporting:** custom console object depth ([#21](https://github.com/americanexpress/one-app-ducks/issues/21)) ([9e66064](https://github.com/americanexpress/one-app-ducks/commit/9e660647193c6f284bf3325419e747fa619b5b39))
+
 ## [4.2.1](https://github.com/americanexpress/one-app-ducks/compare/v4.2.0...v4.2.1) (2020-11-25)
 
 
