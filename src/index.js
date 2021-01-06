@@ -21,7 +21,6 @@ import intlReducer, {
   queryLanguagePack,
   updateLocale,
 } from './intl';
-
 import redirection, { externalRedirect } from './redirection';
 import rendering, {
   setDangerouslyDisableScripts,
