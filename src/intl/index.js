@@ -17,8 +17,6 @@ import { fromJS, Map as iMap } from 'immutable';
 import typeScope from '../utils/typeScope';
 import { getModuleBaseUrl } from '../utils/modules';
 
-export { getEstimatedSize } from './server-cache';
-
 export const defaultLocale = 'en-US';
 
 /* istanbul ignore next */
