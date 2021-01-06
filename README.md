@@ -601,18 +601,6 @@ import { setDangerouslyDisableScriptsAndStyles } from '@americanexpress/one-app-
 dispatch(setDangerouslyDisableScriptsAndStyles(true));
 ```
 
-#### Intl Cache
-
-##### estimatedServerCacheSize
-
-Returns the estimated size of the Intl server cache in Bytes. This is accurate enough to track changes to the cache size overtime however, as there is no native `sizeOf` function in Javascript (like in C), the actual memory allocation of the cache will differ.
-
-```js
-import { estimatedServerCacheSize } from '@americanexpress/one-app-ducks';
-
-estimatedServerCacheSize();
-```
-
 <!--ONE-DOCS-ID end-->
 
 <!--ONE-DOCS-HIDE start-->

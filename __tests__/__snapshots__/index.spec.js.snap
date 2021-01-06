@@ -91,7 +91,6 @@ Array [
   "loadLanguagePack",
   "queryLanguagePack",
   "updateLocale",
-  "estimatedServerCacheSize",
   "externalRedirect",
   "setDangerouslyDisableScripts",
   "setDangerouslyDisableScriptsAndStyles",

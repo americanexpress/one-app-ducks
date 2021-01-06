@@ -21,7 +21,7 @@ import intlReducer, {
   queryLanguagePack,
   updateLocale,
 } from './intl';
-import { estimatedSize as estimatedServerCacheSize } from './intl/server-cache';
+
 import redirection, { externalRedirect } from './redirection';
 import rendering, {
   setDangerouslyDisableScripts,
@@ -58,9 +58,6 @@ export {
   loadLanguagePack,
   queryLanguagePack,
   updateLocale,
-
-  // intl cache
-  estimatedServerCacheSize,
 
   // redirection
   externalRedirect,

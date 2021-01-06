@@ -37,12 +37,12 @@ function get(url) {
   return cached.data;
 }
 
-const estimatedSize = () => sizeOf(Object.fromEntries(cache));
+const getEstimatedSize = () => sizeOf(Object.fromEntries(cache));
 
 export {
   set,
   get,
-  estimatedSize,
+  getEstimatedSize,
 };
 
 function cleanup() {

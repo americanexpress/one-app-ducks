@@ -17,7 +17,7 @@ import lolex from 'lolex';
 describe('server-cache', () => {
   let set;
   let get;
-  let estimatedSize;
+  let getEstimatedSize;
   let clock;
   let intervalUnref;
 
@@ -42,7 +42,7 @@ describe('server-cache', () => {
     const serverCache = require('../../src/intl/server-cache');
     set = serverCache.set;
     get = serverCache.get;
-    estimatedSize = serverCache.estimatedSize;
+    getEstimatedSize = serverCache.getEstimatedSize;
   }
 
   beforeEach(() => {
@@ -94,13 +94,13 @@ describe('server-cache', () => {
     });
   });
 
-  describe('estimatedSize', () => {
+  describe('getEstimatedSize', () => {
     it('returns memory allocation of cache', () => {
       delete process.env.NODE_ENV;
       setupCache();
-      expect(estimatedSize()).toEqual(0);
+      expect(getEstimatedSize()).toEqual(0);
       set('add entry to cache', 'entry');
-      expect(estimatedSize()).toBe(82);
+      expect(getEstimatedSize()).toBe(82);
     });
   });
 

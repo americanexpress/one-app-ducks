@@ -54,7 +54,7 @@
     ]
   },
   "dependencies": {
-    "holocron": "^1.0.0-9",
+    "holocron": "^1.0.0",
     "immutable": "^4.0.0-rc.12",
     "js-cookie": "^2.2.0",
     "lean-intl": "^4.2.2",
