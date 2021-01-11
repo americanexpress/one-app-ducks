@@ -1,3 +1,10 @@
+# [4.3.0](https://github.com/americanexpress/one-app-ducks/compare/v4.2.2...v4.3.0) (2021-01-11)
+
+
+### Features
+
+* **server-cache:** estimatedSize ([#23](https://github.com/americanexpress/one-app-ducks/issues/23)) ([3d65551](https://github.com/americanexpress/one-app-ducks/commit/3d65551ff3b96bd729f629061ef9c831f764f67c))
+
 ## [4.2.2](https://github.com/americanexpress/one-app-ducks/compare/v4.2.1...v4.2.2) (2020-12-02)
 
 
