@@ -17,6 +17,7 @@ import lolex from 'lolex';
 describe('server-cache', () => {
   let set;
   let get;
+  let getEstimatedSize;
   let clock;
   let intervalUnref;
 
@@ -37,9 +38,11 @@ describe('server-cache', () => {
     };
 
     jest.resetModules();
+    // eslint-disable-next-line global-require
     const serverCache = require('../../src/intl/server-cache');
     set = serverCache.set;
     get = serverCache.get;
+    getEstimatedSize = serverCache.getEstimatedSize;
   }
 
   beforeEach(() => {
@@ -88,6 +91,16 @@ describe('server-cache', () => {
       clock.tick(1000);
       expect(get('gets the cached value and resets the TTL')).toEqual('yay');
       expect(Date.now).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('getEstimatedSize', () => {
+    it('returns memory allocation of cache', () => {
+      delete process.env.NODE_ENV;
+      setupCache();
+      expect(getEstimatedSize()).toEqual(0);
+      set('add entry to cache', 'entry');
+      expect(getEstimatedSize()).toBe(82);
     });
   });
 

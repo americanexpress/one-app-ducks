@@ -12,6 +12,8 @@
  * under the License.
  */
 
+import sizeOf from 'object-sizeof';
+
 const cache = new Map();
 
 const CLEANUP_INTERVAL = 10 * 60 * 1e3; // intended to be 10 minutes
@@ -35,9 +37,12 @@ function get(url) {
   return cached.data;
 }
 
+const getEstimatedSize = () => sizeOf(Object.fromEntries(cache));
+
 export {
   set,
   get,
+  getEstimatedSize,
 };
 
 function cleanup() {
