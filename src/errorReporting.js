@@ -126,7 +126,7 @@ function thenSendErrorReport({
           },
         }).then((response) => {
           if (response.ok) {
-            return response.json();
+            return response.text();
           }
           return Promise.reject(response);
         });
