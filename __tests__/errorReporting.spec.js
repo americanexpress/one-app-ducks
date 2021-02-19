@@ -397,7 +397,7 @@ describe('error reporting', () => {
     });
 
     it('should make a reporting network request after queuing a report and handle an empty response', () => {
-      expect.assertions(3);
+      expect.assertions(4);
       const testError = {
         message: 'test error',
         stack: '1\n2\n3',
@@ -425,6 +425,7 @@ describe('error reporting', () => {
 
       return store.dispatch(addErrorToReport(testError, otherData))
         .then(() => {
+          expect(fetch).not.toThrow();
           expect(
             JSON.parse(fetch.mock.calls[0][1].body)
           ).toEqual(expectedReports);
