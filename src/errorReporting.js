@@ -129,8 +129,7 @@ function thenSendErrorReport({
             const textResponse = response.clone();
             const jsonResponse = response.clone();
             return jsonResponse.json()
-              .catch(() => textResponse.text())
-              .then((data) => data);
+              .catch(() => textResponse.text());
           }
           return Promise.reject(response);
         });
