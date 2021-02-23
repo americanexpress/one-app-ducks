@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/americanexpress/one-app-ducks/compare/v4.3.0...v4.3.1) (2021-02-23)
+
+
+### Bug Fixes
+
+* **errorReporting:** fix error with .json() on a 204 ([#28](https://github.com/americanexpress/one-app-ducks/issues/28)) ([ff6a496](https://github.com/americanexpress/one-app-ducks/commit/ff6a49600f5307665ba006d535a0b5fd1937c660)), closes [#25](https://github.com/americanexpress/one-app-ducks/issues/25)
+
 # [4.3.0](https://github.com/americanexpress/one-app-ducks/compare/v4.2.2...v4.3.0) (2021-01-11)
 
 
