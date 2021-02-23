@@ -126,7 +126,10 @@ function thenSendErrorReport({
           },
         }).then((response) => {
           if (response.ok) {
-            return response.json();
+            const textResponse = response.clone();
+            const jsonResponse = response.clone();
+            return jsonResponse.json()
+              .catch(() => textResponse.text());
           }
           return Promise.reject(response);
         });

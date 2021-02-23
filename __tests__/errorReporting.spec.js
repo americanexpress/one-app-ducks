@@ -396,6 +396,46 @@ describe('error reporting', () => {
         });
     });
 
+    it('should make a reporting network request after queuing a report and handle an empty response', () => {
+      expect.assertions(4);
+      const testError = {
+        message: 'test error',
+        stack: '1\n2\n3',
+      };
+      const otherData = { a: 1, b: 2 };
+
+      const store = createStore(
+        combineReducers({
+          config: () => fromJS({ reportingUrl: '/home' }),
+          errorReporting: reducer,
+        }),
+        applyMiddleware(thunk.withExtraArgument({ fetchClient: fetch }))
+      );
+
+      fetch.mockResponseOnce();
+
+      const expectedReports = [
+        {
+          msg: testError.message,
+          stack: testError.stack,
+          href: 'about:blank',
+          otherData,
+        },
+      ];
+
+      return store.dispatch(addErrorToReport(testError, otherData))
+        .then(() => {
+          expect(fetch).not.toThrow();
+          expect(
+            JSON.parse(fetch.mock.calls[0][1].body)
+          ).toEqual(expectedReports);
+          expect(fetch.mock.calls[0][1].method).toEqual('post');
+          expect(
+            fetch.mock.calls[0][1].headers['Content-Type']
+          ).toEqual('application/json');
+        });
+    });
+
     it('should not make a reporting network request if the queue is empty', () => {
       expect.assertions(1);
       const store = createStore(
