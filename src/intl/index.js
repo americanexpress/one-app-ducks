@@ -38,7 +38,10 @@ function buildInitialState({ req } = {}) {
     activeLocale = (navigator && navigator.language) || defaultLocale;
   } else {
     const acceptsLanguages = req.acceptsLanguages();
-    activeLocale = (acceptsLanguages && acceptsLanguages[0]) || defaultLocale;
+    activeLocale = acceptsLanguages && acceptsLanguages[0];
+    if (!activeLocale || activeLocale === '*') {
+      activeLocale = defaultLocale;
+    }
   }
 
   return fromJS({
