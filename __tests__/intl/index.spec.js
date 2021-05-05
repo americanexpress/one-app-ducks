@@ -111,6 +111,12 @@ describe('intl duck', () => {
       expect(state.get('activeLocale')).toBe('en-US');
     });
 
+    it('should use the default locale when accepts languages is a wildcard', () => {
+      const req = { cookies: {}, acceptsLanguages: () => ['*'] };
+      const state = buildInitialState({ req });
+      expect(state.get('activeLocale')).toBe('en-US');
+    });
+
     it('should use the default locale when navigator.language is undefined', () => {
       const { navigator } = global;
       delete global.navigator;
