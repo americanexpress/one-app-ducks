@@ -1,3 +1,10 @@
+## [4.3.2](https://github.com/americanexpress/one-app-ducks/compare/v4.3.1...v4.3.2) (2021-05-05)
+
+
+### Bug Fixes
+
+* **intl:** support wildcard for Accept-Language header ([#31](https://github.com/americanexpress/one-app-ducks/issues/31)) ([28cb8c2](https://github.com/americanexpress/one-app-ducks/commit/28cb8c2ccbc2403f571005644a2850ad70f4378c))
+
 ## [4.3.1](https://github.com/americanexpress/one-app-ducks/compare/v4.3.0...v4.3.1) (2021-02-23)
 
 
