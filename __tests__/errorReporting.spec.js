@@ -19,7 +19,6 @@ import { combineReducers } from 'redux-immutable';
 import configureStore from 'redux-mock-store';
 
 // Module under test
-import util from 'util';
 import reducer, {
   serverSideError,
   addErrorToReport,
@@ -311,7 +310,7 @@ describe('error reporting', () => {
 
       return store.dispatch(sendErrorReport())
         .then((data) => {
-          expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(queue, false, 10, true));
+          expect(consoleErrorSpy).toHaveBeenCalledWith(new Error());
           expect(store.getActions().length).toBe(2);
           expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
           expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_SUCCESS);
@@ -376,6 +375,7 @@ describe('error reporting', () => {
 
       const expectedReports = [
         {
+          type: 'ClientReportedError',
           msg: testError.message,
           stack: testError.stack,
           href: 'about:blank',
@@ -416,6 +416,7 @@ describe('error reporting', () => {
 
       const expectedReports = [
         {
+          type: 'ClientReportedError',
           msg: testError.message,
           stack: testError.stack,
           href: 'about:blank',
@@ -488,15 +489,20 @@ describe('error reporting', () => {
   describe('serverSideError', () => {
     it('should log the error', () => {
       expect.assertions(1);
-      const err = new Error('this is a test');
-      return serverSideError(err).then(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(err, false, 10, true));
+      const queue = [{
+        type: 'ServerSideReportedError',
+        msg: 'test error',
+        stack: '1\n2\n3',
+      }];
+      const err = new Error('test error');
+      return serverSideError(queue).then(() => {
+        expect(consoleErrorSpy).toHaveBeenCalledWith(err);
       });
     });
 
     it('should resolve similarly to the endpoint', () => {
       expect.assertions(1);
-      return serverSideError().then((response) => {
+      return serverSideError([]).then((response) => {
         expect(response).toEqual({ thankYou: true });
       });
     });

@@ -14,7 +14,6 @@
 
 /* eslint no-bitwise: ["error", { "int32Hint": true }] */
 import { fromJS } from 'immutable';
-import util from 'util';
 import typeScope from './utils/typeScope';
 
 // action constants
@@ -38,6 +37,7 @@ const defaultState = fromJS({
 
 export function formatErrorReport(error, otherData) {
   return {
+    type: global.BROWSER ? 'ClientReportedError' : 'ServerSideReportedError',
     msg: error && error.message,
     // TODO: use StackTrace to format the stack?
     stack: error && error.stack, // IE >= 10
@@ -96,10 +96,19 @@ function getPendingPromise(state) {
   return state.getIn(['errorReporting', 'pendingPromise']);
 }
 
-export function serverSideError(error) {
-  // nodejs console truncates output by default
-  // https://nodejs.org/api/util.html#util_util_inspect_object_options
-  console.error(util.inspect(error, false, 10, true));
+export function serverSideError(queue) {
+  queue.forEach((raw) => {
+    const {
+      msg, stack, type, otherData,
+    } = raw;
+    const err = new Error(msg);
+    Object.assign(err, {
+      name: type,
+      stack,
+      metaData: { ...otherData },
+    });
+    console.error(err);
+  });
   return Promise.resolve({ thankYou: true });
 }
 
