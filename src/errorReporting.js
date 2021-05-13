@@ -97,7 +97,7 @@ function getPendingPromise(state) {
 }
 
 export function serverSideError(queue) {
-  queue.forEach((raw) => {
+  [].concat(queue).forEach((raw) => {
     const {
       msg, stack, type, otherData,
     } = raw;
