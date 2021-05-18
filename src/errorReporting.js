@@ -37,7 +37,6 @@ const defaultState = fromJS({
 
 export function formatErrorReport(error, otherData) {
   return {
-    type: global.BROWSER ? 'ClientReportedError' : 'ServerSideReportedError',
     msg: error && error.message,
     // TODO: use StackTrace to format the stack?
     stack: error && error.stack, // IE >= 10
@@ -99,11 +98,10 @@ function getPendingPromise(state) {
 export function serverSideError(queue) {
   [].concat(queue).forEach((raw) => {
     const {
-      msg, stack, type, otherData,
+      msg, stack, otherData,
     } = raw;
     const err = new Error(msg);
     Object.assign(err, {
-      name: type,
       stack,
       metaData: { ...otherData },
     });

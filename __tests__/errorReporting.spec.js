@@ -375,7 +375,6 @@ describe('error reporting', () => {
 
       const expectedReports = [
         {
-          type: 'ClientReportedError',
           msg: testError.message,
           stack: testError.stack,
           href: 'about:blank',
@@ -416,7 +415,6 @@ describe('error reporting', () => {
 
       const expectedReports = [
         {
-          type: 'ClientReportedError',
           msg: testError.message,
           stack: testError.stack,
           href: 'about:blank',
@@ -488,15 +486,16 @@ describe('error reporting', () => {
 
   describe('serverSideError', () => {
     it('should log the error', () => {
-      expect.assertions(1);
+      expect.assertions(2);
       const queue = [{
-        type: 'ServerSideReportedError',
         msg: 'test error',
         stack: '1\n2\n3',
       }];
-      const err = new Error('test error');
+      // const err = new Error('test error');
       return serverSideError(queue).then(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(err);
+        const logged = console.error.mock.calls[0][0];
+        expect(logged).toBeInstanceOf(Error);
+        expect(logged).toHaveProperty('message');
       });
     });
 
