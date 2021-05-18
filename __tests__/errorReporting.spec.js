@@ -491,7 +491,6 @@ describe('error reporting', () => {
         msg: 'test error',
         stack: '1\n2\n3',
       }];
-      // const err = new Error('test error');
       return serverSideError(queue).then(() => {
         const logged = console.error.mock.calls[0][0];
         expect(logged).toBeInstanceOf(Error);
