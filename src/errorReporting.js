@@ -14,7 +14,6 @@
 
 /* eslint no-bitwise: ["error", { "int32Hint": true }] */
 import { fromJS } from 'immutable';
-import util from 'util';
 import typeScope from './utils/typeScope';
 
 // action constants
@@ -96,10 +95,18 @@ function getPendingPromise(state) {
   return state.getIn(['errorReporting', 'pendingPromise']);
 }
 
-export function serverSideError(error) {
-  // nodejs console truncates output by default
-  // https://nodejs.org/api/util.html#util_util_inspect_object_options
-  console.error(util.inspect(error, false, 10, true));
+export function serverSideError(queue) {
+  [].concat(queue).forEach((raw) => {
+    const {
+      msg, stack, otherData,
+    } = raw;
+    const err = new Error(msg);
+    Object.assign(err, {
+      stack,
+      metaData: { ...otherData },
+    });
+    console.error(err);
+  });
   return Promise.resolve({ thankYou: true });
 }
 

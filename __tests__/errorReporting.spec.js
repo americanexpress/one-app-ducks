@@ -19,7 +19,6 @@ import { combineReducers } from 'redux-immutable';
 import configureStore from 'redux-mock-store';
 
 // Module under test
-import util from 'util';
 import reducer, {
   serverSideError,
   addErrorToReport,
@@ -311,7 +310,7 @@ describe('error reporting', () => {
 
       return store.dispatch(sendErrorReport())
         .then((data) => {
-          expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(queue, false, 10, true));
+          expect(consoleErrorSpy).toHaveBeenCalledWith(new Error());
           expect(store.getActions().length).toBe(2);
           expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
           expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_SUCCESS);
@@ -487,16 +486,21 @@ describe('error reporting', () => {
 
   describe('serverSideError', () => {
     it('should log the error', () => {
-      expect.assertions(1);
-      const err = new Error('this is a test');
-      return serverSideError(err).then(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(util.inspect(err, false, 10, true));
+      expect.assertions(2);
+      const queue = [{
+        msg: 'test error',
+        stack: '1\n2\n3',
+      }];
+      return serverSideError(queue).then(() => {
+        const logged = console.error.mock.calls[0][0];
+        expect(logged).toBeInstanceOf(Error);
+        expect(logged).toHaveProperty('message');
       });
     });
 
     it('should resolve similarly to the endpoint', () => {
       expect.assertions(1);
-      return serverSideError().then((response) => {
+      return serverSideError([]).then((response) => {
         expect(response).toEqual({ thankYou: true });
       });
     });
