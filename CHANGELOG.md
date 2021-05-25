@@ -1,3 +1,10 @@
+## [4.3.3](https://github.com/americanexpress/one-app-ducks/compare/v4.3.2...v4.3.3) (2021-05-25)
+
+
+### Bug Fixes
+
+* **error-reporter:** fix server side error formatting ([c699982](https://github.com/americanexpress/one-app-ducks/commit/c699982be9bbe44ada4a75b17ec906671450ad70))
+
 ## [4.3.2](https://github.com/americanexpress/one-app-ducks/compare/v4.3.1...v4.3.2) (2021-05-05)
 
 
