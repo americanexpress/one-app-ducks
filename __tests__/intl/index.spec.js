@@ -295,6 +295,35 @@ describe('intl duck', () => {
       expect(reducer(state, failureAction)).toMatchSnapshot();
     });
 
+    it('should remove error & errorExpiration on successful language request', () => {
+      const oldState = fromJS({
+        activeLocale: 'locale',
+        languagePacks: {
+          locale: {
+            foo: {
+              isLoading: false,
+              data: {},
+              errorExpiration: 1223,
+              error: { name: 'timeouterror' },
+            },
+          },
+        },
+      });
+      const successAction = {
+        type: LANGUAGE_PACK_SUCCESS,
+        locale: 'locale',
+        componentKey: 'foo',
+        data: { data: 'data' },
+      };
+      expect(reducer(oldState, successAction)).toMatchSnapshot();
+      const requestAction = {
+        type: LANGUAGE_PACK_REQUEST,
+        locale: 'locale',
+        componentKey: 'foo',
+      };
+      expect(reducer(oldState, requestAction)).toMatchSnapshot();
+    });
+
     describe('update locale with mock data', () => {
       it('should update the state with mocked data', () => {
         const oldState = fromJS({ activeLocale: 'oldLocale' });
