@@ -61,9 +61,38 @@ Immutable.Map {
           "data": "data",
         },
         "isLoading": false,
+        "_loadedOnServer": true,
+      },
+    },
+  },
+}
+`;
+
+exports[`intl duck reducer should remove error & errorExpiration on successful language request 1`] = `
+Immutable.Map {
+  "activeLocale": "locale",
+  "languagePacks": Immutable.Map {
+    "locale": Immutable.Map {
+      "foo": Immutable.Map {
+        "isLoading": false,
+        "data": Immutable.Map {
+          "data": "data",
+        },
         "_loadedOnServer": false,
-        "errorExpiration": 11234,
-        "error": [Error: error],
+      },
+    },
+  },
+}
+`;
+
+exports[`intl duck reducer should remove error & errorExpiration on successful language request 2`] = `
+Immutable.Map {
+  "activeLocale": "locale",
+  "languagePacks": Immutable.Map {
+    "locale": Immutable.Map {
+      "foo": Immutable.Map {
+        "isLoading": true,
+        "data": Immutable.Map {},
       },
     },
   },
@@ -80,7 +109,7 @@ Immutable.Map {
           "data": "data",
         },
         "isLoading": false,
-        "_loadedOnServer": true,
+        "_loadedOnServer": false,
       },
     },
   },
@@ -97,7 +126,7 @@ Immutable.Map {
           "data": "data",
         },
         "isLoading": false,
-        "_loadedOnServer": false,
+        "_loadedOnServer": true,
       },
     },
   },

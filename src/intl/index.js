@@ -63,6 +63,8 @@ export default function reducer(state = buildInitialState(), action) {
         : state.updateIn(['languagePacks', locale, componentKey], iMap(), (nextState) => nextState.withMutations((map) => map
           .set('data', map.get('data', iMap()))
           .set('isLoading', true)
+          .delete('error')
+          .delete('errorExpiration')
         ));
     }
 
@@ -71,7 +73,9 @@ export default function reducer(state = buildInitialState(), action) {
       return state.updateIn(['languagePacks', locale, componentKey], iMap(), (nextState) => nextState.withMutations((map) => map
         .set('data', iMap(data))
         .set('isLoading', false)
-        .set('_loadedOnServer', !!global.BROWSER)
+        .set('_loadedOnServer', !global.BROWSER)
+        .delete('error')
+        .delete('errorExpiration')
       ));
     }
 
