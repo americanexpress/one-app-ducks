@@ -1,3 +1,10 @@
+## [4.3.4](https://github.com/americanexpress/one-app-ducks/compare/v4.3.3...v4.3.4) (2022-04-28)
+
+
+### Bug Fixes
+
+* **intl:** rm err errExp upon lang req and success ([#48](https://github.com/americanexpress/one-app-ducks/issues/48)) ([bc8390e](https://github.com/americanexpress/one-app-ducks/commit/bc8390e99f12d3b3fee7ff7c484832af1c49844a))
+
 ## [4.3.3](https://github.com/americanexpress/one-app-ducks/compare/v4.3.2...v4.3.3) (2021-05-25)
 
 
