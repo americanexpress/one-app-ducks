@@ -156,12 +156,13 @@ const getUrl = ({ getState, langPackLocale, componentKey }) => {
   ].join('/')}.json`;
 };
 
-const fetchLanguagePack = ({
+const fetchLanguagePack = async ({
   dispatch,
   getState,
   url,
   locale,
   fallbackLocale,
+  fallbackUrl,
   componentKey,
   fetchClient,
   retry = false,
@@ -202,7 +203,7 @@ const fetchLanguagePack = ({
         return fetchLanguagePack({
           getState,
           dispatch,
-          url: getUrl({
+          url: fallbackUrl || getUrl({
             getState,
             langPackLocale: fallbackLocale,
             componentKey,
@@ -226,7 +227,9 @@ const fetchLanguagePack = ({
 function deferredForcedLoadLanguagePack({
   dispatch,
   locale,
+  url,
   fallbackLocale,
+  fallbackUrl,
   componentKey,
   loadLanguagePackAction,
 }) {
@@ -236,8 +239,10 @@ function deferredForcedLoadLanguagePack({
 
   const callback = () => dispatch(loadLanguagePackAction(componentKey, {
     locale,
+    url,
     force: true,
     fallbackLocale,
+    fallbackUrl,
   }));
 
   if (typeof window.requestIdleCallback === 'function') {
@@ -251,7 +256,9 @@ const getResourceFromState = ({
   dispatch,
   getState,
   locale,
+  url,
   fallbackLocale,
+  fallbackUrl,
   componentKey,
   loadLanguagePackAction,
 }) => {
@@ -265,7 +272,9 @@ const getResourceFromState = ({
     deferredForcedLoadLanguagePack({
       dispatch,
       locale,
+      url,
       fallbackLocale,
+      fallbackUrl,
       componentKey,
       loadLanguagePackAction,
     });
@@ -278,7 +287,9 @@ export function loadLanguagePack(
   {
     locale: givenLocale,
     force = false,
+    url,
     fallbackLocale,
+    fallbackUrl,
   } = {}
 ) {
   return (dispatch, getState, { fetchClient }) => {
@@ -289,6 +300,9 @@ export function loadLanguagePack(
     if (!locale) {
       return Promise.reject(new Error('Failed to load language pack. No locale was set or given'));
     }
+    if (fallbackUrl && !fallbackLocale) {
+      return Promise.reject(new Error('Fallback locale is required when fallback URL is provided for language pack'));
+    }
 
     const existingPromise = getLoadingPromise({ getState, locale, componentKey });
 
@@ -296,13 +310,14 @@ export function loadLanguagePack(
       return existingPromise;
     }
 
-
     if (isLoaded({ getState, locale, componentKey }) && !force) {
       return Promise.resolve(getResourceFromState({
         dispatch,
         getState,
         locale,
+        url,
         fallbackLocale,
+        fallbackUrl,
         componentKey,
         loadLanguagePackAction: loadLanguagePack,
       }));
@@ -310,13 +325,14 @@ export function loadLanguagePack(
     const promise = fetchLanguagePack({
       getState,
       dispatch,
-      url: getUrl({
+      url: url || getUrl({
         getState,
         langPackLocale: locale,
         componentKey,
       }),
       locale,
       fallbackLocale,
+      fallbackUrl,
       fetchClient,
       componentKey,
     });

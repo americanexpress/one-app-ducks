@@ -397,7 +397,7 @@ describe('error reporting', () => {
     });
 
     it('should make a reporting network request after queuing a report and handle an empty response', async () => {
-      expect.assertions(4);
+      expect.assertions(3);
       const testError = {
         message: 'test error',
         stack: '1\n2\n3',
@@ -412,7 +412,7 @@ describe('error reporting', () => {
         applyMiddleware(thunk.withExtraArgument({ fetchClient: fetch }))
       );
 
-      fetch.mockResponseOnce();
+      fetch.mockResponse();
 
       const expectedReports = [
         {
@@ -424,7 +424,6 @@ describe('error reporting', () => {
       ];
 
       await store.dispatch(addErrorToReport(testError, otherData));
-      expect(fetch).not.toThrow();
       expect(
         JSON.parse(fetch.mock.calls[0][1].body)
       ).toEqual(expectedReports);

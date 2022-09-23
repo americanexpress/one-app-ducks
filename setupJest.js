@@ -15,4 +15,4 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 require('@babel/polyfill');
 // eslint-disable-next-line import/no-extraneous-dependencies
-global.fetch = require('jest-fetch-mock');
+require('jest-fetch-mock').enableMocks();
