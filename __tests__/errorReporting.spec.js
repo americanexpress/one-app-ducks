@@ -32,7 +32,7 @@ import reducer, {
 } from '../src/errorReporting';
 
 describe('error reporting', () => {
-  const consoleErrorSpy = jest.spyOn(console, 'error');
+  const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => 0);
 
   beforeEach(() => {
     consoleErrorSpy.mockClear();
@@ -134,7 +134,7 @@ describe('error reporting', () => {
       expect(reducer(fromJS(oldState), action).toJS()).toEqual(newState);
     });
 
-    it('should add pending reports back to the queue when reporting failed', () => {
+    it('should add pending reports back to the queue when reporting failed', async () => {
       const report = {
         msg: 'test report',
         stack: '1\n2\n3',
@@ -167,18 +167,21 @@ describe('error reporting', () => {
       // needed to handle the asynchronously rejected promise in this synchronous unit test
       // jest version 21.x.x and up no longer tolerate unhandled rejected promises
       // https://github.com/facebook/jest/issues/6028
-      return promise.catch(console.error);
+      return promise.catch(() => 0);
     });
 
-    it('should update the retry wait', () => {
+    it('should update the retry wait', async () => {
       const initialState = reducer(undefined, {});
+      let resolvePendingPromise;
+      const pendingPromise = new Promise((res) => { resolvePendingPromise = res; });
       const action = {
         type: SCHEDULE_ERROR_REPORT,
-        promise: new Promise(() => null),
+        promise: pendingPromise,
       };
       const state = reducer(initialState, action);
       expect(state.get('pendingPromise')).toBe(action.promise);
       expect(state.get('retryWait')).toBeGreaterThan(initialState.get('retryWait'));
+      return resolvePendingPromise();
     });
   });
 
@@ -228,7 +231,7 @@ describe('error reporting', () => {
       ).toEqual('application/json');
     });
 
-    it('should retry a reporting network request', () => {
+    it('should retry a reporting network request', async () => {
       expect.assertions(3);
 
       const queue = [
@@ -237,12 +240,13 @@ describe('error reporting', () => {
           stack: '1\n2\n3',
         },
       ];
+      const promise = Promise.reject();
       const store = mockStore({
         config: fromJS({ reportingUrl: '/home' }),
         errorReporting: fromJS({
           queue,
           pending: [],
-          pendingPromise: Promise.reject(),
+          pendingPromise: promise,
         }),
       });
 
@@ -250,15 +254,15 @@ describe('error reporting', () => {
         thankYou: true,
       }));
 
-      return store.dispatch(sendErrorReport())
-        .then(() => {
-          expect(store.getActions().length).toBe(2);
-          expect(store.getActions()[0].type).toEqual(SCHEDULE_ERROR_REPORT);
-          expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_REQUEST);
-        });
+      await store.dispatch(sendErrorReport());
+      expect(store.getActions().length).toBe(2);
+      expect(store.getActions()[0].type).toEqual(SCHEDULE_ERROR_REPORT);
+      expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_REQUEST);
+
+      return promise.catch(() => 0);
     });
 
-    it('should retry a reporting network request if response is not okay', () => {
+    it('should retry a reporting network request if response is not okay', async () => {
       expect.assertions(3);
 
       const queue = [
@@ -267,26 +271,29 @@ describe('error reporting', () => {
           stack: '1\n2\n3',
         },
       ];
+      const promise = Promise.reject();
       const store = mockStore({
         config: fromJS({ reportingUrl: '/home' }),
         errorReporting: fromJS({
           queue,
           pending: [],
-          pendingPromise: Promise.reject(),
+          pendingPromise: promise,
         }),
       });
 
       fetch.mockResponseOnce(JSON.stringify({}), { ok: false, status: 500 });
 
-      return store.dispatch(sendErrorReport())
-        .then(() => {
-          expect(store.getActions().length).toBe(2);
-          expect(store.getActions()[0].type).toEqual(SCHEDULE_ERROR_REPORT);
-          expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_REQUEST);
-        });
+      await store.dispatch(sendErrorReport());
+
+      expect(store.getActions().length).toBe(2);
+      expect(store.getActions()[0].type).toEqual(SCHEDULE_ERROR_REPORT);
+      expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_REQUEST);
+
+      await store.getActions()[1].promise.catch(() => 0);
+      return promise.catch(() => 0);
     });
 
-    it('should log instead making a reporting network request on the server', () => {
+    it('should log instead making a reporting network request on the server', async () => {
       expect.assertions(6);
       global.BROWSER = false;
       const queue = [
@@ -308,18 +315,16 @@ describe('error reporting', () => {
         thankYou: true,
       }));
 
-      return store.dispatch(sendErrorReport())
-        .then((data) => {
-          expect(consoleErrorSpy).toHaveBeenCalledWith(new Error());
-          expect(store.getActions().length).toBe(2);
-          expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
-          expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_SUCCESS);
-          expect(data).toEqual({ thankYou: true });
-          expect(fetch.mock.calls).toEqual([]);
-        });
+      const data = await store.dispatch(sendErrorReport());
+      expect(consoleErrorSpy).toHaveBeenCalledWith(new Error());
+      expect(store.getActions().length).toBe(2);
+      expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
+      expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_SUCCESS);
+      expect(data).toEqual({ thankYou: true });
+      expect(fetch.mock.calls).toEqual([]);
     });
 
-    it('should wait on a pending network request', () => {
+    it('should wait on a pending network request', async () => {
       expect.assertions(2);
       let resolvePendingPromise;
       const queue = [
@@ -347,13 +352,11 @@ describe('error reporting', () => {
       expect(store.getActions().length).toBe(0);
       resolvePendingPromise();
 
-      return pendingPromise
-        .then(() => {
-          expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
-        });
+      await pendingPromise;
+      expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);
     });
 
-    it('should make a reporting network request after queuing a report', () => {
+    it('should make a reporting network request after queuing a report', async () => {
       expect.assertions(4);
       const testError = {
         message: 'test error',
@@ -382,20 +385,18 @@ describe('error reporting', () => {
         },
       ];
 
-      return store.dispatch(addErrorToReport(testError, otherData))
-        .then((data) => {
-          expect(data).toEqual({ thankYou: true });
-          expect(
-            JSON.parse(fetch.mock.calls[0][1].body)
-          ).toEqual(expectedReports);
-          expect(fetch.mock.calls[0][1].method).toEqual('post');
-          expect(
-            fetch.mock.calls[0][1].headers['Content-Type']
-          ).toEqual('application/json');
-        });
+      const data = await store.dispatch(addErrorToReport(testError, otherData));
+      expect(data).toEqual({ thankYou: true });
+      expect(
+        JSON.parse(fetch.mock.calls[0][1].body)
+      ).toEqual(expectedReports);
+      expect(fetch.mock.calls[0][1].method).toEqual('post');
+      expect(
+        fetch.mock.calls[0][1].headers['Content-Type']
+      ).toEqual('application/json');
     });
 
-    it('should make a reporting network request after queuing a report and handle an empty response', () => {
+    it('should make a reporting network request after queuing a report and handle an empty response', async () => {
       expect.assertions(4);
       const testError = {
         message: 'test error',
@@ -422,20 +423,18 @@ describe('error reporting', () => {
         },
       ];
 
-      return store.dispatch(addErrorToReport(testError, otherData))
-        .then(() => {
-          expect(fetch).not.toThrow();
-          expect(
-            JSON.parse(fetch.mock.calls[0][1].body)
-          ).toEqual(expectedReports);
-          expect(fetch.mock.calls[0][1].method).toEqual('post');
-          expect(
-            fetch.mock.calls[0][1].headers['Content-Type']
-          ).toEqual('application/json');
-        });
+      await store.dispatch(addErrorToReport(testError, otherData));
+      expect(fetch).not.toThrow();
+      expect(
+        JSON.parse(fetch.mock.calls[0][1].body)
+      ).toEqual(expectedReports);
+      expect(fetch.mock.calls[0][1].method).toEqual('post');
+      expect(
+        fetch.mock.calls[0][1].headers['Content-Type']
+      ).toEqual('application/json');
     });
 
-    it('should not make a reporting network request if the queue is empty', () => {
+    it('should not make a reporting network request if the queue is empty', async () => {
       expect.assertions(1);
       const store = createStore(
         combineReducers({
@@ -449,13 +448,11 @@ describe('error reporting', () => {
         thankYou: true,
       }));
 
-      return store.dispatch(sendErrorReport())
-        .then(() => {
-          expect(fetch).not.toHaveBeenCalled();
-        });
+      await store.dispatch(sendErrorReport());
+      expect(fetch).not.toHaveBeenCalled();
     });
 
-    it('should use the reportingUrl config', () => {
+    it('should use the reportingUrl config', async () => {
       expect.assertions(2);
 
       const testError = { message: 'test error' };
@@ -474,35 +471,31 @@ describe('error reporting', () => {
         thankYou: true,
       }));
 
-      return store.dispatch(addErrorToReport(testError))
-        .then((data) => {
-          const [resultingErrorReportingUrl] = fetch.mock.calls[0];
+      const data = await store.dispatch(addErrorToReport(testError));
+      const [resultingErrorReportingUrl] = fetch.mock.calls[0];
 
-          expect(data).toEqual({ thankYou: true });
-          expect(resultingErrorReportingUrl).toEqual(errorReportingUrl);
-        });
+      expect(data).toEqual({ thankYou: true });
+      expect(resultingErrorReportingUrl).toEqual(errorReportingUrl);
     });
   });
 
   describe('serverSideError', () => {
-    it('should log the error', () => {
+    it('should log the error', async () => {
       expect.assertions(2);
       const queue = [{
         msg: 'test error',
         stack: '1\n2\n3',
       }];
-      return serverSideError(queue).then(() => {
-        const logged = console.error.mock.calls[0][0];
-        expect(logged).toBeInstanceOf(Error);
-        expect(logged).toHaveProperty('message');
-      });
+      await serverSideError(queue);
+      const logged = console.error.mock.calls[0][0];
+      expect(logged).toBeInstanceOf(Error);
+      expect(logged).toHaveProperty('message');
     });
 
-    it('should resolve similarly to the endpoint', () => {
+    it('should resolve similarly to the endpoint', async () => {
       expect.assertions(1);
-      return serverSideError([]).then((response) => {
-        expect(response).toEqual({ thankYou: true });
-      });
+      const response = await serverSideError([]);
+      expect(response).toEqual({ thankYou: true });
     });
   });
 
