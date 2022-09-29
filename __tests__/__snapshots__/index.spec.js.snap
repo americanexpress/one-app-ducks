@@ -79,23 +79,23 @@ Immutable.Map {
 `;
 
 exports[`index should expose the publicAPI 1`] = `
-Array [
-  "setOrigin",
-  "setUserAgent",
-  "getCookies",
+[
+  "addErrorToReport",
   "applicationError",
   "clearError",
-  "addErrorToReport",
-  "sendErrorReport",
+  "default",
+  "externalRedirect",
+  "getCookies",
   "getLocalePack",
   "loadLanguagePack",
   "queryLanguagePack",
-  "updateLocale",
-  "externalRedirect",
+  "sendErrorReport",
   "setDangerouslyDisableScripts",
   "setDangerouslyDisableScriptsAndStyles",
+  "setOrigin",
   "setRenderPartialOnly",
   "setRenderTextOnly",
-  "default",
+  "setUserAgent",
+  "updateLocale",
 ]
 `;

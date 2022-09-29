@@ -33,6 +33,7 @@ import reducer, {
 
 describe('error reporting', () => {
   const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => 0);
+  jest.spyOn(console, 'warn').mockImplementation(() => 0);
 
   beforeEach(() => {
     consoleErrorSpy.mockClear();
@@ -486,7 +487,7 @@ describe('error reporting', () => {
         stack: '1\n2\n3',
       }];
       await serverSideError(queue);
-      const logged = console.error.mock.calls[0][0];
+      const logged = consoleErrorSpy.mock.calls[0][0];
       expect(logged).toBeInstanceOf(Error);
       expect(logged).toHaveProperty('message');
     });

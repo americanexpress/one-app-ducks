@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`intl duck actions loadLanguagePack is loaded on server (no requestIdleCallback) 1`] = `
-Array [
-  Array [
+[
+  [
     [Function],
     10000000,
   ],
@@ -10,8 +10,8 @@ Array [
 `;
 
 exports[`intl duck actions loadLanguagePack is loaded on server 1`] = `
-Array [
-  Array [
+[
+  [
     [Function],
   ],
 ]
@@ -22,7 +22,7 @@ exports[`intl duck actions loadLanguagePack should throw when the error does not
 exports[`intl duck actions loadLanguagePack should throw when there is a non-404 error response 1`] = `[Error: Internal Server Error (https://example.com/cdn/foo-bar/1.0.0/bd-lc/foo-bar.json)]`;
 
 exports[`intl duck actions updateLocale actions test should allow any valid BCP 47 locale if enableAllIntlLocales is true 1`] = `
-Object {
+{
   "locale": "be-BY",
   "type": "@americanexpress/one-app-ducks/intl/UPDATE_LOCALE",
 }
