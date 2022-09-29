@@ -23,7 +23,7 @@ import serverLocalePacks from '../../lib/intl/localePacks.node';
 global.Intl = Intl;
 
 jest.mock('lean-intl', () => {
-  const realIntl = require.requireActual('lean-intl');
+  const realIntl = jest.requireActual('lean-intl');
   return {
     ...realIntl,
     __addLocaleData: jest.fn(realIntl.__addLocaleData),

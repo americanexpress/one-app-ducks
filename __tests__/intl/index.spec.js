@@ -59,6 +59,7 @@ jest.mock('../../src/intl/localePacks.node', () => {
 }, { virtual: true });
 jest.mock('../../src/intl/server-cache');
 jest.useFakeTimers();
+jest.spyOn(global, 'setTimeout');
 
 Date.now = jest.fn(() => 1234);
 

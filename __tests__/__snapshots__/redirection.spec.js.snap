@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`redirection externalRedirect should dispatch NOOP if destination is not a string 1`] = `
-Object {
+{
   "type": "@americanexpress/one-app-ducks/redirection/NOOP",
 }
 `;
 
 exports[`redirection externalRedirect should dispatch a SERVER_SIDE_REDIRECT on the server 1`] = `
-Object {
+{
   "destination": "http://americanexpress.io/",
   "type": "@americanexpress/one-app-ducks/redirection/SERVER_SIDE_REDIRECT",
 }
 `;
 
 exports[`redirection externalRedirect should perform a client-side redirect on the browser 1`] = `
-Object {
+{
   "type": "@americanexpress/one-app-ducks/redirection/CLIENT_SIDE_REDIRECT",
 }
 `;
