@@ -156,7 +156,7 @@ const getUrl = ({ getState, langPackLocale, componentKey }) => {
   ].join('/')}.json`;
 };
 
-const fetchLanguagePack = async ({
+const fetchLanguagePack = ({
   dispatch,
   getState,
   url,
@@ -167,8 +167,10 @@ const fetchLanguagePack = async ({
   fetchClient,
   retry = false,
 }) => {
+  let defaultUrl;
   if (!global.BROWSER) {
-    const cached = serverLangPackCache.get(url);
+    defaultUrl = getUrl({ getState, langPackLocale: locale, componentKey });
+    const cached = serverLangPackCache.get(url, defaultUrl);
     if (cached) {
       // eslint-disable-next-line no-console
       console.info(`using serverLangPackCache for ${url}`);
@@ -187,7 +189,7 @@ const fetchLanguagePack = async ({
       if (!global.BROWSER) {
         // eslint-disable-next-line no-console
         console.info(`setting serverLangPackCache: url ${url}, data`, data);
-        serverLangPackCache.set(url, data);
+        serverLangPackCache.set(url, data, defaultUrl);
       }
       return data;
     })

@@ -13,27 +13,39 @@
  */
 
 import sizeOf from 'object-sizeof';
+import { createHash } from 'node:crypto';
 
 const cache = new Map();
 
-const CLEANUP_INTERVAL = 10 * 60 * 1e3; // intended to be 10 minutes
+const CLEANUP_INTERVAL = 10 * 60 * 1e3; // 10 minutes
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+const generateHash = (a, b) => {
+  const hash = createHash('sha256');
+  hash.update(a === b || !b ? a : a + b);
+  return hash.digest('hex');
+};
+
 // users are likely to make language changes in development, don't cache
-const set = isDevelopment ? () => {} : (url, data) => {
+const set = isDevelopment ? () => {} : (url, data, defaultUrl) => {
   cache.set(url, {
     data,
     lastAccess: Date.now(),
+    hash: generateHash(url, defaultUrl),
+    byoLangPack: defaultUrl && url !== defaultUrl,
   });
 };
 
-function get(url) {
+function get(url, defaultUrl) {
   if (!cache.has(url)) {
     return undefined;
   }
   const cached = cache.get(url);
-  cached.lastAccess = Date.now();
+  // Refetch on new module deployments when using BYO lang pack even if the URL has not changed
+  if (cached.hash !== generateHash(url, defaultUrl)) return undefined;
+  // Always refetch after 10min if using BYO lang pack
+  if (!cached.byoLangPack) cached.lastAccess = Date.now();
   return cached.data;
 }
 

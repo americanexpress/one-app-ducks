@@ -92,6 +92,20 @@ describe('server-cache', () => {
       expect(get('gets the cached value and resets the TTL')).toEqual('yay');
       expect(Date.now).toHaveBeenCalledTimes(2);
     });
+
+    it('does not resets the TTL when using BYO lang pack', () => {
+      set('gets the cached value and resets the TTL', 'yay', 'foo');
+      clock.tick(1000);
+      expect(Date.now).toHaveBeenCalledTimes(1);
+      clock.tick(1000);
+      expect(get('gets the cached value and resets the TTL', 'foo')).toEqual('yay');
+      expect(Date.now).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not get from the cache when using BYO lang pack and a new module version has been deployed', () => {
+      set('gets the cached value and resets the TTL', 'yay', 'foo');
+      expect(get('gets the cached value and resets the TTL', 'bar')).toBe(undefined);
+    });
   });
 
   describe('getEstimatedSize', () => {
@@ -100,7 +114,7 @@ describe('server-cache', () => {
       setupCache();
       expect(getEstimatedSize()).toEqual(0);
       set('add entry to cache', 'entry');
-      expect(getEstimatedSize()).toBe(82);
+      expect(getEstimatedSize()).toBe(240);
     });
   });
 
