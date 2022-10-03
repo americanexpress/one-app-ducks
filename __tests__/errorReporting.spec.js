@@ -290,8 +290,13 @@ describe('error reporting', () => {
       expect(store.getActions()[0].type).toEqual(SCHEDULE_ERROR_REPORT);
       expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_REQUEST);
 
+      jest.useFakeTimers();
+      jest.runAllTimers();
+
       await store.getActions()[1].promise.catch(() => 0);
-      return promise.catch(() => 0);
+      await promise.catch(() => 0);
+
+      jest.useRealTimers();
     });
 
     it('should log instead making a reporting network request on the server', async () => {
