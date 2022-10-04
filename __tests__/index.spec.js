@@ -29,6 +29,7 @@ describe('index', () => {
 
 describe('immutable store test', () => {
   const { default: reducers } = publicAPI;
+  jest.spyOn(console, 'error').mockImplementation(() => 0);
 
   function isImmutableDeep(state) {
     return fromJS(state).equals(state);

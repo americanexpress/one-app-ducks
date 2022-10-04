@@ -25,7 +25,12 @@ import reducer, {
 
 describe('redirection', () => {
   const destination = 'http://americanexpress.io/';
-  const assignSpy = jest.spyOn(window.location, 'assign');
+  const assignSpy = jest.fn();
+  Object.defineProperty(window, 'location', {
+    value: {
+      assign: assignSpy,
+    },
+  });
 
   beforeEach(() => jest.clearAllMocks());
 

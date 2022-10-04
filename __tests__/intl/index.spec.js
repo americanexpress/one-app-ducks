@@ -59,6 +59,7 @@ jest.mock('../../src/intl/localePacks.node', () => {
 }, { virtual: true });
 jest.mock('../../src/intl/server-cache');
 jest.useFakeTimers();
+jest.spyOn(global, 'setTimeout');
 
 Date.now = jest.fn(() => 1234);
 
@@ -76,7 +77,8 @@ TimeoutError.prototype = Object.create(Error.prototype, {
 });
 
 describe('intl duck', () => {
-  const consoleWarnSpy = jest.spyOn(console, 'warn');
+  const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => 0);
+  jest.spyOn(console, 'info').mockImplementation(() => 0);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -349,6 +351,7 @@ describe('intl duck', () => {
     // TODO: test error scenarios when we are no longer mocking fetch
     describe('loadLanguagePack', () => {
       const locale = 'en-US';
+      const fallbackLocale = 'qya';
       const componentKey = 'foo-bar';
 
       const successfulRequestAction = {
@@ -363,7 +366,7 @@ describe('intl duck', () => {
         global.BROWSER = true;
       });
 
-      it('not loaded or loading', (done) => {
+      it('not loaded or loading', async () => {
         const store = mockStore({
           intl: fromJS({
             activeLocale: locale,
@@ -379,21 +382,14 @@ describe('intl duck', () => {
           },
         }));
 
-        store.dispatch(loadLanguagePack(componentKey))
-          .then(() => {
-            try {
-              expect(store.getActions()[0].type).toBe(LANGUAGE_PACK_REQUEST);
-              expect(store.getActions()[0].componentKey).toBe(componentKey);
-              expect(store.getActions()[0].locale).toBe(locale);
-              expect(store.getActions()[1]).toEqual({ data: fromJS({ test: 'not loaded or loading' }), ...successfulRequestAction });
-              done();
-            } catch (e) {
-              done(e);
-            }
-          });
+        await store.dispatch(loadLanguagePack(componentKey));
+        expect(store.getActions()[0].type).toBe(LANGUAGE_PACK_REQUEST);
+        expect(store.getActions()[0].componentKey).toBe(componentKey);
+        expect(store.getActions()[0].locale).toBe(locale);
+        expect(store.getActions()[1]).toEqual({ data: fromJS({ test: 'not loaded or loading' }), ...successfulRequestAction });
       });
 
-      it('loads', (done) => {
+      it('loads', async () => {
         const store = mockStore({
           intl: fromJS({
             activeLocale: locale,
@@ -404,19 +400,12 @@ describe('intl duck', () => {
           data: 'bar',
         }));
 
-        store.dispatch(loadLanguagePack(componentKey))
-          .then((resource) => {
-            try {
-              expect(store.getActions().length).toBe(2);
-              expect(resource).toEqual({ data: 'bar' });
-              done();
-            } catch (e) {
-              done.fail(e);
-            }
-          });
+        const resource = await store.dispatch(loadLanguagePack(componentKey));
+        expect(store.getActions().length).toBe(2);
+        expect(resource).toEqual({ data: 'bar' });
       });
 
-      it('is loaded', (done) => {
+      it('is loaded', async () => {
         const store = mockStore({
           intl: fromJS({
             activeLocale: locale,
@@ -431,16 +420,9 @@ describe('intl duck', () => {
           holocron: fromJS({}),
         });
 
-        store.dispatch(loadLanguagePack(componentKey))
-          .then((resource) => {
-            try {
-              expect(store.getActions().length).toBe(0);
-              expect(resource).toEqual(fromJS({ data: 'data' }));
-              done();
-            } catch (e) {
-              done.fail(e);
-            }
-          });
+        const resource = await store.dispatch(loadLanguagePack(componentKey));
+        expect(store.getActions().length).toBe(0);
+        expect(resource).toEqual(fromJS({ data: 'data' }));
       });
 
       it('is loaded on server', async () => {
@@ -489,10 +471,10 @@ describe('intl duck', () => {
           config: fromJS({}),
         });
 
-        fetch.mockResponseOnce(() => Promise.resolve({
-          status: 404,
-          body: JSON.stringify({ data: 'fallback' }),
-        }));
+        fetch.mockResponses([
+          [JSON.stringify({ data: 'fallback' })],
+          [JSON.stringify({}), { status: 404, statusText: 'Not found' }],
+        ]);
 
         const resource = await store.dispatch(loadLanguagePack(componentKey, { fallbackLocale: 'en-US' }));
         let actions = store.getActions();
@@ -548,7 +530,7 @@ describe('intl duck', () => {
           });
       });
 
-      it('is loading', (done) => {
+      it('is loading', async () => {
         const store = mockStore({
           intl: fromJS({
             activeLocale: 'en-US',
@@ -563,19 +545,12 @@ describe('intl duck', () => {
           holocron: fromJS({}),
         });
 
-        store.dispatch(loadLanguagePack(componentKey))
-          .then((resource) => {
-            try {
-              expect(store.getActions().length).toBe(0);
-              expect(resource).toEqual({ data: 'data' });
-              done();
-            } catch (e) {
-              done.fail(e);
-            }
-          });
+        const resource = await store.dispatch(loadLanguagePack(componentKey));
+        expect(store.getActions().length).toBe(0);
+        expect(resource).toEqual({ data: 'data' });
       });
 
-      it('last fetch failed', (done) => {
+      it('last fetch failed', async () => {
         fetch.mockResponseOnce(JSON.stringify({
           test: 'last fetch failed',
         }));
@@ -593,29 +568,90 @@ describe('intl duck', () => {
           config: fromJS({}),
         });
 
-        store.dispatch(loadLanguagePack(componentKey))
-          .then(() => {
-            try {
-              expect(store.getActions()[0].type).toBe(LANGUAGE_PACK_REQUEST);
-              expect(store.getActions()[0].componentKey).toBe(componentKey);
-              expect(store.getActions()[0].locale).toBe(locale);
-              expect(store.getActions()[1]).toEqual({ data: iMap({ test: 'last fetch failed' }), ...successfulRequestAction });
-              done();
-            } catch (e) {
-              done.fail(e);
-            }
-          });
+        await store.dispatch(loadLanguagePack(componentKey));
+        expect(store.getActions()[0].type).toBe(LANGUAGE_PACK_REQUEST);
+        expect(store.getActions()[0].componentKey).toBe(componentKey);
+        expect(store.getActions()[0].locale).toBe(locale);
+        expect(store.getActions()[1]).toEqual({ data: iMap({ test: 'last fetch failed' }), ...successfulRequestAction });
       });
 
-      it('should handle no activeLocale', (done) => {
+      it('should use a custom URL when provided', async () => {
+        const url = `https://example.com/language/${componentKey}/${locale}`;
+        const store = mockStore({
+          intl: fromJS({
+            activeLocale: locale,
+          }),
+          config: fromJS({}),
+        });
+        fetch.mockResponseOnce(async (req) => {
+          if (req.url === url) {
+            return { body: JSON.stringify({ data: 'custom language' }) };
+          }
+          throw new Error(`Unexpected URL: ${req.url}`);
+        });
+
+        const resource = await store.dispatch(loadLanguagePack(componentKey, { url }));
+        expect(store.getActions().length).toBe(2);
+        expect(resource).toEqual({ data: 'custom language' });
+      });
+
+      it('should use the fallback custom URL when provided', async () => {
+        const url = `https://example.com/language/${componentKey}/${locale}`;
+        const fallbackUrl = `https://example.com/language/${componentKey}/${fallbackLocale}`;
+        const store = mockStore({
+          intl: fromJS({
+            activeLocale: locale,
+          }),
+          config: fromJS({}),
+        });
+        fetch.mockResponse(async (req) => {
+          if (req.url === url) {
+            return { body: '', status: 404, statusText: 'Not Found' };
+          }
+          if (req.url === fallbackUrl) {
+            return { body: JSON.stringify({ data: 'fallback custom language' }) };
+          }
+          throw new Error(`Unexpected URL: ${req.url}`);
+        });
+
+        const resource = await store.dispatch(loadLanguagePack(componentKey, {
+          url,
+          fallbackLocale,
+          fallbackUrl,
+        }));
+        expect(store.getActions().length).toBe(2);
+        expect(resource).toEqual({ data: 'fallback custom language' });
+      });
+
+      it('should throw an error if there is a fallback URL and no fallback locale', async () => {
+        expect.assertions(1);
+        const url = `https://example.com/language/${componentKey}/${locale}`;
+        const fallbackUrl = `https://example.com/language/${componentKey}/${fallbackLocale}`;
+        const store = mockStore({
+          intl: fromJS({
+            activeLocale: locale,
+          }),
+          config: fromJS({}),
+        });
+
+        try {
+          await store.dispatch(loadLanguagePack(componentKey, { url, fallbackUrl }));
+        } catch (error) {
+          expect(error).toEqual(new Error('Fallback locale is required when fallback URL is provided for language pack'));
+        }
+      });
+
+      it('should handle no activeLocale', async () => {
+        expect.assertions(1);
         const store = mockStore({
           intl: fromJS({}),
           holocron: fromJS({}),
         });
-        store.dispatch(loadLanguagePack('foo')).catch((error) => {
+        try {
+          await store.dispatch(loadLanguagePack('foo'));
+        } catch (error) {
           expect(error).toEqual(new Error('Failed to load language pack. No locale was set or given'));
-          done();
-        });
+        }
       });
 
       it('should throw when there is a non-404 error response', async () => {
@@ -720,14 +756,10 @@ describe('intl duck', () => {
         beforeEach(() => {
           global.BROWSER = false;
           serverLangPackCache.mock.reset();
-          jest.spyOn(console, 'info');
         });
 
-        afterEach(() => {
-          console.info.mockRestore();
-        });
-
-        it('caches good responses and uses the cache', () => {
+        it('caches good responses and uses the cache', async () => {
+          expect.assertions(6);
           const store = mockStore({
             intl: fromJS({
               activeLocale: locale,
@@ -745,24 +777,18 @@ describe('intl duck', () => {
           const staticLocale = `https://example.com/cdn/foo-bar/1.0.0/${locale.toLowerCase()}/${componentKey}.json`;
           fetch.mockResponseOnce(JSON.stringify({ test: 'caches good responses and uses the cache' }));
 
-          expect.assertions(6);
+          const resource = await store.dispatch(loadLanguagePack(componentKey));
+          expect(resource).toEqual({ test: 'caches good responses and uses the cache' });
+          expect(fetch).toHaveBeenCalledTimes(1);
+          expect(console.info).toHaveBeenCalledWith(`setting serverLangPackCache: url ${staticLocale}, data`, { test: 'caches good responses and uses the cache' });
 
-          return store.dispatch(loadLanguagePack(componentKey))
-            .then((resource) => {
-              expect(resource).toEqual({ test: 'caches good responses and uses the cache' });
-              expect(fetch).toHaveBeenCalledTimes(1);
-              expect(console.info).toHaveBeenCalledWith(`setting serverLangPackCache: url ${staticLocale}, data`, { test: 'caches good responses and uses the cache' });
-
-              return store.dispatch(loadLanguagePack(componentKey));
-            })
-            .then((resource) => {
-              expect(resource).toEqual({ test: 'caches good responses and uses the cache' });
-              expect(fetch).toHaveBeenCalledTimes(1);
-              expect(console.info).toHaveBeenCalledWith(`using serverLangPackCache for ${staticLocale}`);
-            });
+          const cachedResource = await store.dispatch(loadLanguagePack(componentKey));
+          expect(cachedResource).toEqual({ test: 'caches good responses and uses the cache' });
+          expect(fetch).toHaveBeenCalledTimes(1);
+          expect(console.info).toHaveBeenCalledWith(`using serverLangPackCache for ${staticLocale}`);
         });
 
-        it('does not cache bad responses', () => {
+        it('does not cache bad responses', async () => {
           const store = mockStore({
             intl: fromJS({
               activeLocale: locale,
@@ -783,19 +809,15 @@ describe('intl duck', () => {
 
           expect.assertions(6);
 
-          return store.dispatch(loadLanguagePack(componentKey))
-            .then((resource) => {
-              expect(resource).toEqual({});
-              expect(fetch).toHaveBeenCalledTimes(1);
-              expect(console.info).not.toHaveBeenCalled();
+          const resource = await store.dispatch(loadLanguagePack(componentKey));
+          expect(resource).toEqual({});
+          expect(fetch).toHaveBeenCalledTimes(1);
+          expect(console.info).not.toHaveBeenCalled();
 
-              return store.dispatch(loadLanguagePack(componentKey));
-            })
-            .then((resource) => {
-              expect(resource).toEqual({ test: 'does not cache bad responses' });
-              expect(fetch).toHaveBeenCalledTimes(2);
-              expect(console.info).toHaveBeenCalledWith(`setting serverLangPackCache: url ${staticLocale}, data`, { test: 'does not cache bad responses' });
-            });
+          const cachedResource = await store.dispatch(loadLanguagePack(componentKey));
+          expect(cachedResource).toEqual({ test: 'does not cache bad responses' });
+          expect(fetch).toHaveBeenCalledTimes(2);
+          expect(console.info).toHaveBeenCalledWith(`setting serverLangPackCache: url ${staticLocale}, data`, { test: 'does not cache bad responses' });
         });
       });
     });
@@ -989,7 +1011,7 @@ describe('intl duck', () => {
       });
     });
 
-    it('updateLocale', (done) => {
+    it('updateLocale', async () => {
       const locale = 'en-NZ';
       const store = mockStore({
         intl: fromJS({}),
@@ -1001,16 +1023,8 @@ describe('intl duck', () => {
         locale,
       };
 
-      store.dispatch(updateLocale(locale))
-        .then(() => {
-          try {
-            expect(store.getActions()[0]).toEqual(updateLocaleAction);
-            done();
-          } catch (e) {
-            done.fail(e);
-          }
-        })
-        .catch((e) => done.fail(e));
+      await store.dispatch(updateLocale(locale));
+      expect(store.getActions()[0]).toEqual(updateLocaleAction);
     });
 
     describe('updateLocale actions test', () => {

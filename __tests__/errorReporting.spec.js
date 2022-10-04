@@ -33,6 +33,7 @@ import reducer, {
 
 describe('error reporting', () => {
   const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => 0);
+  jest.spyOn(console, 'warn').mockImplementation(() => 0);
 
   beforeEach(() => {
     consoleErrorSpy.mockClear();
@@ -289,8 +290,13 @@ describe('error reporting', () => {
       expect(store.getActions()[0].type).toEqual(SCHEDULE_ERROR_REPORT);
       expect(store.getActions()[1].type).toEqual(SEND_ERROR_REPORT_REQUEST);
 
+      jest.useFakeTimers();
+      jest.runAllTimers();
+
       await store.getActions()[1].promise.catch(() => 0);
-      return promise.catch(() => 0);
+      await promise.catch(() => 0);
+
+      jest.useRealTimers();
     });
 
     it('should log instead making a reporting network request on the server', async () => {
@@ -397,7 +403,7 @@ describe('error reporting', () => {
     });
 
     it('should make a reporting network request after queuing a report and handle an empty response', async () => {
-      expect.assertions(4);
+      expect.assertions(3);
       const testError = {
         message: 'test error',
         stack: '1\n2\n3',
@@ -412,7 +418,7 @@ describe('error reporting', () => {
         applyMiddleware(thunk.withExtraArgument({ fetchClient: fetch }))
       );
 
-      fetch.mockResponseOnce();
+      fetch.mockResponse();
 
       const expectedReports = [
         {
@@ -424,7 +430,6 @@ describe('error reporting', () => {
       ];
 
       await store.dispatch(addErrorToReport(testError, otherData));
-      expect(fetch).not.toThrow();
       expect(
         JSON.parse(fetch.mock.calls[0][1].body)
       ).toEqual(expectedReports);
@@ -487,7 +492,7 @@ describe('error reporting', () => {
         stack: '1\n2\n3',
       }];
       await serverSideError(queue);
-      const logged = console.error.mock.calls[0][0];
+      const logged = consoleErrorSpy.mock.calls[0][0];
       expect(logged).toBeInstanceOf(Error);
       expect(logged).toHaveProperty('message');
     });

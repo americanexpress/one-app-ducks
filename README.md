@@ -364,9 +364,11 @@ This action creator can take the following arguments:
 | Argument | Type | Description |
 |---|---|---|
 | `moduleName` | `String` | (required) Gets the language pack for the module specified. |
-| `givenLocale` | `String` | Gets the language pack for the given locale, as opposed to the locale in state. |
-| `force` | `String` | Force fetches the language pack if you don't want to use what is in state  |
-| `fallbackLocale` | `String` | If the language pack does not exist, fetches this lang pack instead.  |
+| `options.locale` | `String` | Gets the language pack for the given locale, as opposed to the locale in state. |
+| `options.url` | `String` | URL to fetch the language pack from if not using language packs generated via one-app-bundler |
+| `options.force` | `String` | Force fetches the language pack if you don't want to use what is in state  |
+| `options.fallbackLocale` | `String` | If the language pack does not exist, fetches this lang pack instead.  |
+| `options.fallbackUrl` | `String` | URL to use for fallback locale if not using language packs generated with one-app-bundler |
 
 ```js
 import { loadLanguagePack } from '@americanexpress/one-app-ducks';
@@ -375,7 +377,7 @@ import { loadLanguagePack } from '@americanexpress/one-app-ducks';
 
 export default holocronModule({
   name: 'my-module',
-  load: () => (dispatch) => dispatch(loadLanguagePack('my-module', null, null, 'en-US')),
+  load: () => (dispatch) => dispatch(loadLanguagePack('my-module', { locale: 'en-US' })),
 })(MyModule);
 ```
 
