@@ -1,3 +1,10 @@
+# [4.4.0](https://github.com/americanexpress/one-app-ducks/compare/v4.3.4...v4.4.0) (2022-10-04)
+
+
+### Features
+
+* **intl:** allow custom URLs for locale packs ([#56](https://github.com/americanexpress/one-app-ducks/issues/56)) ([e010ef4](https://github.com/americanexpress/one-app-ducks/commit/e010ef44396c95bb96f40448502bdb1d0d2ed32b))
+
 ## [4.3.4](https://github.com/americanexpress/one-app-ducks/compare/v4.3.3...v4.3.4) (2022-04-28)
 
 
