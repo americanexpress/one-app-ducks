@@ -1,6 +1,6 @@
 {
   "name": "@americanexpress/one-app-ducks",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "Globally used redux ducks used within the One App ecosystem.",
   "main": "lib/index.js",
   "homepage": "https://github.com/americanexpress/one-app-ducks",

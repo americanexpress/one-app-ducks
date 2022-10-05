@@ -1,3 +1,10 @@
+## [4.4.1](https://github.com/americanexpress/one-app-ducks/compare/v4.4.0...v4.4.1) (2022-10-05)
+
+
+### Bug Fixes
+
+* **intl:** import from crypto for better backward compatibility ([#61](https://github.com/americanexpress/one-app-ducks/issues/61)) ([7106d8d](https://github.com/americanexpress/one-app-ducks/commit/7106d8d2806f6eb8d360c0c3d50790506e299b1f))
+
 # [4.4.0](https://github.com/americanexpress/one-app-ducks/compare/v4.3.4...v4.4.0) (2022-10-04)
 
 
