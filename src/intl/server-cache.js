@@ -13,7 +13,7 @@
  */
 
 import sizeOf from 'object-sizeof';
-import { createHash } from 'node:crypto';
+import { createHash } from 'crypto';
 
 const cache = new Map();
 
