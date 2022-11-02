@@ -402,7 +402,7 @@ export function getLocalePack(locale) {
     return localePack();
   }
 
-  return Promise.reject(new Error(`No locale bundle available for ${locale}`));
+  return Promise.reject(new Error(`No locale bundle available for "${locale}" (type ${typeof locale})`));
 }
 
 export function updateLocale(locale) {
