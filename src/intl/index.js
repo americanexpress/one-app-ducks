@@ -56,13 +56,14 @@ export default function reducer(state = buildInitialState(), action) {
     }
 
     case LANGUAGE_PACK_REQUEST: {
-      const { locale, componentKey } = action;
+      const { locale, componentKey, promise } = action;
       const langPackState = state.getIn(['languagePacks', locale, componentKey], iMap());
       return langPackState.get('_loadedOnServer')
         ? state
         : state.updateIn(['languagePacks', locale, componentKey], iMap(), (nextState) => nextState.withMutations((map) => map
           .set('data', map.get('data', iMap()))
           .set('isLoading', true)
+          .set('promise', promise)
           .delete('error')
           .delete('errorExpiration')
         ));
@@ -74,6 +75,7 @@ export default function reducer(state = buildInitialState(), action) {
         .set('data', iMap(data))
         .set('isLoading', false)
         .set('_loadedOnServer', !global.BROWSER)
+        .delete('promise')
         .delete('error')
         .delete('errorExpiration')
       ));
@@ -89,7 +91,9 @@ export default function reducer(state = buildInitialState(), action) {
         .set('data', map.get('data', iMap()))
         .set('isLoading', false)
         .set('errorExpiration', Date.now() + 10e3)
-        .set('error', error)));
+        .set('error', error)
+        .delete('promise')
+      ));
     }
 
     case LANGUAGE_PACK_DEFERRED_FORCE_LOAD: {
@@ -126,7 +130,7 @@ const isLoaded = ({ getState, locale, componentKey }) => {
 
 const getLoadingPromise = ({ getState, locale, componentKey }) => {
   const state = getState();
-  return state.getIn(['intl', 'languagePacks', locale, componentKey, 'isLoading']);
+  return state.getIn(['intl', 'languagePacks', locale, componentKey, 'promise']);
 };
 
 const langPackToIguazu = ({ getState, componentKey }) => {
@@ -344,6 +348,7 @@ export function loadLanguagePack(
       type: LANGUAGE_PACK_REQUEST,
       componentKey,
       locale,
+      promise,
     });
 
     // Handle Success or Failure Dispatch as Side Effect
@@ -360,6 +365,16 @@ export function loadLanguagePack(
         error,
         componentKey,
         locale,
+      }))
+      .finally(() => getResourceFromState({
+        dispatch,
+        getState,
+        locale,
+        url,
+        fallbackLocale,
+        fallbackUrl,
+        componentKey,
+        loadLanguagePackAction: loadLanguagePack,
       }));
     // Return original promise to have custom handling possible
     return promise;

@@ -139,10 +139,12 @@ describe('intl duck', () => {
 
     it('language pack request action', () => {
       const oldState = fromJS({ activeLocale: 'locale' });
+      const promise = Promise.resolve();
       const action = {
         type: LANGUAGE_PACK_REQUEST,
         locale: 'locale',
         componentKey: 'foo',
+        promise,
       };
       const newState = {
         activeLocale: 'locale',
@@ -151,6 +153,7 @@ describe('intl duck', () => {
             foo: {
               isLoading: true,
               data: {},
+              promise,
             },
           },
         },
@@ -173,6 +176,7 @@ describe('intl duck', () => {
         type: LANGUAGE_PACK_REQUEST,
         locale: 'locale',
         componentKey: 'foo',
+        promise: Promise.resolve(),
       };
       const newState = {
         activeLocale: 'locale',
@@ -322,6 +326,7 @@ describe('intl duck', () => {
         type: LANGUAGE_PACK_REQUEST,
         locale: 'locale',
         componentKey: 'foo',
+        promise: Promise.resolve(),
       };
       expect(reducer(oldState, requestAction)).toMatchSnapshot();
     });
@@ -537,7 +542,8 @@ describe('intl duck', () => {
             languagePacks: {
               'en-US': {
                 [componentKey]: {
-                  isLoading: Promise.resolve({ data: 'data' }),
+                  isLoading: true,
+                  promise: Promise.resolve({ data: 'data' }),
                 },
               },
             },
