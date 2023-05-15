@@ -28,7 +28,7 @@ exports[`intl duck actions updateLocale actions test should allow any valid BCP 
 }
 `;
 
-exports[`intl duck actions updateLocale actions test should reject a valid BCP 47 locale if enableAllIntlLocales is true and Intl.js does not have a bundle for it 1`] = `[Error: No locale bundle available for tlh]`;
+exports[`intl duck actions updateLocale actions test should reject a valid BCP 47 locale if enableAllIntlLocales is true and Intl.js does not have a bundle for it 1`] = `[Error: No locale bundle available for "tlh" (type string)]`;
 
 exports[`intl duck actions updateLocale actions test should reject if no locale is given 1`] = `"No locale was given"`;
 
