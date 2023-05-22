@@ -389,6 +389,8 @@ export function queryLanguagePack(componentKey, { fallbackLocale } = {}) {
   };
 }
 
+export const loadedLocales = new Set();
+
 export function getLocalePack(locale) {
   const localeArray = locale.split('-');
   let localePack;
@@ -399,7 +401,11 @@ export function getLocalePack(locale) {
   }
 
   if (localePack) {
-    return localePack();
+    if (!loadedLocales.has(locale)) {
+      loadedLocales.add(locale);
+      return localePack();
+    }
+    return Promise.resolve();
   }
 
   return Promise.reject(new Error(`No locale bundle available for "${locale}" (type ${typeof locale})`));
