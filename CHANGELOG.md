@@ -1,3 +1,10 @@
+## [4.4.2](https://github.com/americanexpress/one-app-ducks/compare/v4.4.1...v4.4.2) (2023-05-22)
+
+
+### Bug Fixes
+
+* **memoryLeak:** track loaded locales with a set ([#69](https://github.com/americanexpress/one-app-ducks/issues/69)) ([d0d66cd](https://github.com/americanexpress/one-app-ducks/commit/d0d66cd6a2911a551332355416aa7d0b267b6bb2))
+
 ## [4.4.1](https://github.com/americanexpress/one-app-ducks/compare/v4.4.0...v4.4.1) (2022-10-05)
 
 

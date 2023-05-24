@@ -36,6 +36,7 @@ import reducer, {
   LANGUAGE_PACK_SUCCESS,
   LANGUAGE_PACK_FAILURE,
   LANGUAGE_PACK_DEFERRED_FORCE_LOAD,
+  loadedLocales,
 } from '../../src/intl';
 
 jest.mock('holocron', () => ({
@@ -1076,6 +1077,16 @@ describe('intl duck', () => {
       await expect(getLocalePack('xx-XX')).resolves.toBe('xx');
       await expect(getLocalePack('xx-Xxxx-XX')).resolves.toBe('xx');
       await expect(getLocalePack('yy-Yyyy-YY')).resolves.toBe('yy-Yyyy');
+    });
+    it('should only load each langpack once', async () => {
+      loadedLocales.clear();
+      getLocalePack('zz-XA');
+      getLocalePack('xx-XX');
+      getLocalePack('xx-Xxxx-XX');
+      getLocalePack('yy-Yyyy-YY');
+      // call the same locale to verify its not added twice
+      getLocalePack('yy-Yyyy-YY');
+      expect(loadedLocales.size).toBe(4);
     });
   });
 });
