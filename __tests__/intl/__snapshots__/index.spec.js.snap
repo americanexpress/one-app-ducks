@@ -93,6 +93,7 @@ Immutable.Map {
       "foo": Immutable.Map {
         "isLoading": true,
         "data": Immutable.Map {},
+        "promise": Promise {},
       },
     },
   },
