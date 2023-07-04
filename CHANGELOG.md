@@ -1,3 +1,10 @@
+## [4.4.3](https://github.com/americanexpress/one-app-ducks/compare/v4.4.2...v4.4.3) (2023-07-04)
+
+
+### Bug Fixes
+
+* **intl:** return actual promise, resolve as loaded does ([#68](https://github.com/americanexpress/one-app-ducks/issues/68)) ([8262d29](https://github.com/americanexpress/one-app-ducks/commit/8262d2967622e11d8689a34e68dd9c339b622182))
+
 ## [4.4.2](https://github.com/americanexpress/one-app-ducks/compare/v4.4.1...v4.4.2) (2023-05-22)
 
 
