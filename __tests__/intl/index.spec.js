@@ -16,7 +16,7 @@
  * under the License.
  */
 
-/* eslint no-unused-expressions:0, no-underscore-dangle:0 */
+/* eslint no-unused-expressions:0, no-underscore-dangle:0 -- disable for test */
 import { fromJS, Map as iMap } from 'immutable';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
@@ -644,6 +644,7 @@ describe('intl duck', () => {
         try {
           await store.dispatch(loadLanguagePack(componentKey, { url, fallbackUrl }));
         } catch (error) {
+          // eslint-disable-next-line jest/no-conditional-expect -- test error
           expect(error).toEqual(new Error('Fallback locale is required when fallback URL is provided for language pack'));
         }
       });
@@ -657,6 +658,7 @@ describe('intl duck', () => {
         try {
           await store.dispatch(loadLanguagePack('foo'));
         } catch (error) {
+          // eslint-disable-next-line jest/no-conditional-expect -- test error
           expect(error).toEqual(new Error('Failed to load language pack. No locale was set or given'));
         }
       });
@@ -1039,6 +1041,7 @@ describe('intl duck', () => {
         const store = mockStore({ config: fromJS({}) });
         return store.dispatch(updateLocale('be-BY'))
           .catch((message) => {
+            // eslint-disable-next-line jest/no-conditional-expect -- test error
             expect(message).toMatchSnapshot();
           });
       });
@@ -1055,6 +1058,7 @@ describe('intl duck', () => {
         const store = mockStore({ config: fromJS({ enableAllIntlLocales: 'true' }) });
         return store.dispatch(updateLocale('tlh'))
           .catch((err) => {
+            // eslint-disable-next-line jest/no-conditional-expect -- test error
             expect(err).toMatchSnapshot();
           });
       });
@@ -1063,6 +1067,7 @@ describe('intl duck', () => {
         const store = mockStore({ config: fromJS({}) });
         return store.dispatch(updateLocale())
           .catch((error) => {
+            // eslint-disable-next-line jest/no-conditional-expect -- test error
             expect(error.message).toMatchSnapshot();
           });
       });

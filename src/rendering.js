@@ -27,7 +27,7 @@ export const initialState = fromJS({
   renderTextOnly: false,
   renderTextOnlyOptions: { htmlTagReplacement: '', allowedHtmlTags: [] },
 });
-
+// eslint-disable-next-line default-param-last -- reducers have default params first
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_DANGEROUSLY_DISABLE_SCRIPTS:

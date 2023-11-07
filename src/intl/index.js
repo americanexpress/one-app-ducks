@@ -21,7 +21,7 @@ export const defaultLocale = 'en-US';
 
 /* istanbul ignore next */
 // This import will resolve in the build output
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved -- load based on server or browser
 const localePacks = global.BROWSER ? require('./localePacks.client') : require('./localePacks.node');
 
 export const UPDATE_LOCALE = `${typeScope}/intl/UPDATE_LOCALE`;
@@ -48,7 +48,7 @@ function buildInitialState({ req } = {}) {
     activeLocale,
   });
 }
-
+// eslint-disable-next-line default-param-last -- reducers have default params first
 export default function reducer(state = buildInitialState(), action) {
   switch (action.type) {
     case UPDATE_LOCALE: {
@@ -83,7 +83,7 @@ export default function reducer(state = buildInitialState(), action) {
 
     case LANGUAGE_PACK_FAILURE: {
       const { locale, componentKey, error } = action;
-      // eslint-disable-next-line no-underscore-dangle
+
       if (state.getIn(['languagePacks', locale, componentKey, '_loadedOnServer'])) {
         return state;
       }
@@ -176,7 +176,7 @@ const fetchLanguagePack = ({
     defaultUrl = getUrl({ getState, langPackLocale: locale, componentKey });
     const cached = serverLangPackCache.get(url, defaultUrl);
     if (cached) {
-      // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-console -- logging
       console.info(`using serverLangPackCache for ${url}`);
       return Promise.resolve(cached);
     }
@@ -191,7 +191,7 @@ const fetchLanguagePack = ({
     })
     .then((data) => {
       if (!global.BROWSER) {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- logging
         console.info(`setting serverLangPackCache: url ${url}, data`, data);
         serverLangPackCache.set(url, data, defaultUrl);
       }
@@ -270,7 +270,7 @@ const getResourceFromState = ({
 }) => {
   const state = getState();
   const langPack = state.getIn(['intl', 'languagePacks', locale, componentKey]);
-  // eslint-disable-next-line no-underscore-dangle
+  // eslint-disable-next-line no-underscore-dangle -- properties have underscore
   if (langPack && langPack._loadedOnServer && !langPack._pendingDeferredForceLoad) {
     // Make a request on the client once idle even though the language
     // pack was loaded on the server, so that it can be cached by the
@@ -410,7 +410,7 @@ export function getLocalePack(locale) {
   const localeArray = locale.split('-');
   let localePack;
 
-  while (localeArray.length && !localePack) {
+  while (localeArray.length > 0 && !localePack) {
     localePack = localePacks[localeArray.join('-')];
     localeArray.pop();
   }
