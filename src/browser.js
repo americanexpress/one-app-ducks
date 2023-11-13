@@ -58,6 +58,7 @@ function buildInitialState({ req } = {}) {
 }
 
 // reducers
+// eslint-disable-next-line default-param-last -- reducers have default params first
 export default function browserReducer(state = buildInitialState(), action) {
   switch (action.type) {
     case SET_ORIGIN:

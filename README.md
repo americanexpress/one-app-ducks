@@ -166,7 +166,6 @@ import { setOrigin } from '@americanexpress/one-app-ducks';
 // ...
 
 store.dispatch(setOrigin('https://example.com'));
-
 ```
 
 <!--ONE-DOCS-ID end-->

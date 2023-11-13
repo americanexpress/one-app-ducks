@@ -14,7 +14,6 @@
 
 import { getModuleMap } from 'holocron';
 
-// eslint-disable-next-line import/prefer-default-export
 export function getModuleBaseUrl(componentKey) {
   const moduleBaseUrl = getModuleMap().getIn(['modules', componentKey, 'baseUrl']);
   if (moduleBaseUrl.endsWith('/')) return moduleBaseUrl.slice(0, -1);

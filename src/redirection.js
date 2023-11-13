@@ -24,6 +24,7 @@ export const initialState = fromJS({
   redirectionInFlight: false,
 });
 
+// eslint-disable-next-line default-param-last -- reducers have default params first
 export default function redirectionReducer(state = initialState, action) {
   switch (action.type) {
     case SERVER_SIDE_REDIRECT:

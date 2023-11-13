@@ -12,7 +12,7 @@
  * under the License.
  */
 
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle -- Intl has properties with underscores */
 
 import fs from 'fs';
 import path from 'path';
@@ -36,6 +36,7 @@ describe('localePacks', () => {
     .map((locale) => locale.slice(0, -5));
 
   // Validate we're really getting the locales
+  // eslint-disable-next-line jest/no-standalone-expect -- standalone expect needed
   expect(locales.length).toBe(787);
 
   beforeEach(() => jest.clearAllMocks());
@@ -52,7 +53,7 @@ describe('localePacks', () => {
   it('should export an object of functions that load the intl data', async () => {
     expect.assertions(2);
     const locale = locales[0];
-    // eslint-disable-next-line import/no-dynamic-require
+    // eslint-disable-next-line import/no-dynamic-require -- dynamic require needed
     const localeData = require(`lean-intl/locale-data/json/${locale}.json`);
     // TODO: update babel & jest so client locale packs can be tested
     // const clientResult = await clientLocalePacks[locale]();
@@ -70,3 +71,4 @@ describe('localePacks', () => {
     expect(serverLocalePacks[locale]()).toBeInstanceOf(Promise);
   });
 });
+/* eslint-enable no-underscore-dangle -- Intl has properties with underscores */

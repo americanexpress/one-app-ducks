@@ -69,7 +69,9 @@ describe('error reporting', () => {
         // the second level varies based on location it's accessed
         const newStateReportStack = newStateReport.stack.split('\n');
         const testErrorStack = testError.stack.split('\n');
+        // eslint-disable-next-line jest/no-conditional-expect -- test error
         expect(newStateReportStack[0]).toEqual(testErrorStack[0]);
+        // eslint-disable-next-line jest/no-conditional-expect -- test error
         expect(newStateReportStack.slice(2)).toEqual(testErrorStack.slice(2));
       }
     });
@@ -187,7 +189,7 @@ describe('error reporting', () => {
   });
 
   describe('actions', () => {
-    // eslint-disable-next-line max-len
+    // eslint-disable-next-line max-len -- configure store in one line
     const mockStore = (initialState) => configureStore([thunk.withExtraArgument({ fetchClient: fetch })])(fromJS(initialState));
     beforeEach(() => { global.BROWSER = true; });
 
@@ -322,6 +324,7 @@ describe('error reporting', () => {
       }));
 
       const data = await store.dispatch(sendErrorReport());
+      // eslint-disable-next-line unicorn/error-message -- we're testing console.error
       expect(consoleErrorSpy).toHaveBeenCalledWith(new Error());
       expect(store.getActions().length).toBe(2);
       expect(store.getActions()[0].type).toEqual(SEND_ERROR_REPORT_REQUEST);

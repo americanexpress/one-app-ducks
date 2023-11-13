@@ -38,7 +38,7 @@ describe('server-cache', () => {
     };
 
     jest.resetModules();
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line global-require -- dynamic require
     const serverCache = require('../../src/intl/server-cache');
     set = serverCache.set;
     get = serverCache.get;

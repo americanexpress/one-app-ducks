@@ -19,6 +19,7 @@ import { addErrorToReport } from './errorReporting';
 export const APPLICATION_ERROR = `${typeScope}/error/APPLICATION_ERROR`;
 export const CLEAR_APPLICATION_ERROR = `${typeScope}/error/CLEAR_APPLICATION_ERROR`;
 
+// eslint-disable-next-line default-param-last -- reducers have default params first
 export default function reducer(state = fromJS({}), action) {
   switch (action.type) {
     case APPLICATION_ERROR:

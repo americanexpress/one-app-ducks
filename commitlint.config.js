@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2019 American Express Travel Related Services Company, Inc.
  *

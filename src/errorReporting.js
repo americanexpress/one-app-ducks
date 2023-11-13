@@ -12,7 +12,7 @@
  * under the License.
  */
 
-/* eslint no-bitwise: ["error", { "int32Hint": true }] */
+/* eslint no-bitwise: ["error", { "int32Hint": true }] -- disable no-bitwise */
 import { fromJS } from 'immutable';
 import typeScope from './utils/typeScope';
 
@@ -45,6 +45,7 @@ export function formatErrorReport(error, otherData) {
   };
 }
 
+// eslint-disable-next-line default-param-last -- reducers have default params first
 export default function errorReportingReducer(state = defaultState, action) {
   const stateQueue = state.get('queue');
   const statePending = state.get('pending');
@@ -75,6 +76,7 @@ export default function errorReportingReducer(state = defaultState, action) {
     case SEND_ERROR_REPORT_FAILURE:
       return state
         .set('pending', fromJS([]))
+        // eslint-disable-next-line unicorn/prefer-spread -- use concatination
         .set('queue', stateQueue.concat(statePending))
         .set('pendingPromise', null);
 
@@ -96,6 +98,7 @@ function getPendingPromise(state) {
 }
 
 export function serverSideError(queue) {
+  // eslint-disable-next-line unicorn/prefer-spread -- use concatination
   [].concat(queue).forEach((raw) => {
     const {
       msg, stack, otherData,
@@ -143,7 +146,7 @@ function thenSendErrorReport({
       } else {
         requestPromise = serverSideError(queue);
       }
-
+      // eslint-disable-next-line no-promise-executor-return -- we want to return setTimeout
       const delayPromise = new Promise((resolve) => setTimeout(resolve, DEFAULT_REQUEST_WAIT));
       dispatch({
         type: SEND_ERROR_REPORT_REQUEST,
@@ -161,8 +164,8 @@ function thenSendErrorReport({
       return body;
     })
     .catch(() => {
-    // catch the error to prevent looping
-    // and attempt a retry
+      // catch the error to prevent looping
+      // and attempt a retry
       const retryPromise = new Promise((res) => {
         setTimeout(() => res(), getState().getIn(['errorReporting', 'retryWait']));
       });

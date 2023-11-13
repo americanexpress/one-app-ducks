@@ -12,7 +12,7 @@
  * under the License.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line import/no-extraneous-dependencies -- import babel
 require('@babel/polyfill');
-// eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line import/no-extraneous-dependencies -- import jest fetch mock
 require('jest-fetch-mock').enableMocks();
