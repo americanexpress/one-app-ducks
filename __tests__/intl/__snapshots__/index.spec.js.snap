@@ -21,6 +21,13 @@ exports[`intl duck actions loadLanguagePack should throw when the error does not
 
 exports[`intl duck actions loadLanguagePack should throw when there is a non-404 error response 1`] = `[Error: Internal Server Error (https://example.com/cdn/foo-bar/1.0.0/bd-lc/foo-bar.json)]`;
 
+exports[`intl duck actions should not call getLocalePack when useNativeIntl env var is true 1`] = `
+{
+  "locale": "en-GB",
+  "type": "@americanexpress/one-app-ducks/intl/UPDATE_LOCALE",
+}
+`;
+
 exports[`intl duck actions updateLocale actions test should allow any valid BCP 47 locale if enableAllIntlLocales is true 1`] = `
 {
   "locale": "be-BY",
