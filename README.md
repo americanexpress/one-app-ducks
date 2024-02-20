@@ -409,13 +409,15 @@ const loadDataAsProps = ({ store: { dispatch } }) => ({
 This action creator is used to set the active locale for One App.
 The promise will resolve once the
 locale bundle (containing locale data for `Intl.js`,
-[`React Intl`](https://www.npmjs.com/package/react-intl)) and
+[`React Intl`](https://www.npmjs.com/package/react-intl) and
 [`Moment.js`](http://momentjs.com/)) is loaded and the active locale is set. It will reject if
 [Lean-Intl](https://github.com/sebastian-software/lean-intl) does not have a bundle for the locale.
 
 The locale bundles don't need to be an exact match. For instance setting the
 locale to `'en-XA'` will load `i18n/en.js` and `'zh-Hans-XB'` will load
 `i18n/zh-Hans.js`.
+
+If the Environment Variable `ONE_CONFIG_USE_NATIVE_INTL` is set to `true`, then `updateLocale` will not try to add the Lean-Intl bundle, but will still update the active locale.
 
 This action creator can take the following argument:
 
