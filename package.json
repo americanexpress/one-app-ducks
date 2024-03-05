@@ -13,7 +13,7 @@
     "prebuild": "npm run clean",
     "build:ejs": "node scripts/render-ejs.js",
     "build:node": "node scripts/build-node-imports.js",
-    "build:src": "babel src --out-dir lib --verbose --copy-files",
+    "build:src": "babel src --out-dir lib --verbose --copy-files && rimraf lib/**/__mocks__",
     "build": "npm run build:src && npm run build:ejs && npm run build:node",
     "pretest": "npm run build",
     "test:lint": "eslint --ignore-path .gitignore --ext js,jsx,snap,md .",
