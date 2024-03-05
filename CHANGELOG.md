@@ -1,3 +1,10 @@
+## [4.4.4](https://github.com/americanexpress/one-app-ducks/compare/v4.4.3...v4.4.4) (2024-03-05)
+
+
+### Performance Improvements
+
+* **intl:** lower log level for language pack cache ([#77](https://github.com/americanexpress/one-app-ducks/issues/77)) ([a6acbba](https://github.com/americanexpress/one-app-ducks/commit/a6acbbaf048bcedea97ab59a2a89fa0c6d43d935))
+
 ## [4.4.3](https://github.com/americanexpress/one-app-ducks/compare/v4.4.2...v4.4.3) (2023-07-04)
 
 
