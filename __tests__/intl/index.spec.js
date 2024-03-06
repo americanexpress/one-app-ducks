@@ -1071,6 +1071,14 @@ describe('intl duck', () => {
           });
       });
     });
+
+    it('should not call getLocalePack when useNativeIntl env var is true', async () => {
+      window.useNativeIntl = true;
+      const store = mockStore({ config: fromJS({ enableAllIntlLocales: 'true' }) });
+      await store.dispatch(updateLocale('en-GB'));
+      expect(store.getActions()[0]).toMatchSnapshot();
+      expect(loadedLocales.has('en-GB')).toEqual(false);
+    });
   });
 
   describe('getLocalePack', () => {

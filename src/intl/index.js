@@ -433,13 +433,21 @@ export function updateLocale(locale) {
       return Promise.reject(new Error('No locale was given'));
     }
 
+    const action = {
+      type: UPDATE_LOCALE,
+      locale,
+    };
+
+    if (window?.useNativeIntl || process.env.ONE_CONFIG_USE_NATIVE_INTL === 'true') {
+      return Promise.resolve().then(() => {
+        dispatch(action);
+      });
+    }
+
     // supporting files for locale dependent libraries
     return getLocalePack(locale)
       .then(() => {
-        dispatch({
-          type: UPDATE_LOCALE,
-          locale,
-        });
+        dispatch(action);
       });
   };
 }
