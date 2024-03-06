@@ -17,6 +17,7 @@
  */
 
 /* eslint no-unused-expressions:0, no-underscore-dangle:0 -- disable for test */
+import util from 'node:util';
 import { fromJS, Map as iMap } from 'immutable';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
@@ -61,6 +62,8 @@ jest.mock('../../src/intl/localePacks.node', () => {
 jest.mock('../../src/intl/server-cache');
 jest.useFakeTimers();
 jest.spyOn(global, 'setTimeout');
+jest.spyOn(console, 'warn').mockImplementation(util.format);
+jest.spyOn(console, 'debug').mockImplementation(util.format);
 
 Date.now = jest.fn(() => 1234);
 
@@ -78,9 +81,6 @@ TimeoutError.prototype = Object.create(Error.prototype, {
 });
 
 describe('intl duck', () => {
-  const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => 0);
-  jest.spyOn(console, 'info').mockImplementation(() => 0);
-
   beforeEach(() => {
     jest.clearAllMocks();
     fetch.resetMocks();
@@ -729,7 +729,7 @@ describe('intl duck', () => {
 
         const resource = await store.dispatch(loadLanguagePack(componentKey, { fallbackLocale: 'en-US' }));
         expect(store.getActions().length).toBe(2);
-        expect(consoleWarnSpy.mock.calls[0][0]).toBe('Missing zz-TP language pack for foo-bar, falling back to en-US.');
+        expect(console.warn.mock.results[0].value).toMatchInlineSnapshot('"Missing zz-TP language pack for foo-bar, falling back to en-US."');
         expect(resource).toEqual({ data: 'fallback' });
       });
 
@@ -757,7 +757,7 @@ describe('intl duck', () => {
 
         const resource = await store.dispatch(loadLanguagePack(componentKey));
         expect(store.getActions().length).toBe(2);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+        expect(console.warn).not.toHaveBeenCalled();
         expect(resource).toEqual({});
       });
 
@@ -783,18 +783,17 @@ describe('intl duck', () => {
               },
             },
           }));
-          const staticLocale = `https://example.com/cdn/foo-bar/1.0.0/${locale.toLowerCase()}/${componentKey}.json`;
           fetch.mockResponseOnce(JSON.stringify({ test: 'caches good responses and uses the cache' }));
 
           const resource = await store.dispatch(loadLanguagePack(componentKey));
           expect(resource).toEqual({ test: 'caches good responses and uses the cache' });
           expect(fetch).toHaveBeenCalledTimes(1);
-          expect(console.info).toHaveBeenCalledWith(`setting serverLangPackCache: url ${staticLocale}, data`, { test: 'caches good responses and uses the cache' });
+          expect(console.debug.mock.results[0].value).toMatchInlineSnapshot('"setting serverLangPackCache: url https://example.com/cdn/foo-bar/1.0.0/en-us/foo-bar.json, data { test: \'caches good responses and uses the cache\' }"');
 
           const cachedResource = await store.dispatch(loadLanguagePack(componentKey));
           expect(cachedResource).toEqual({ test: 'caches good responses and uses the cache' });
           expect(fetch).toHaveBeenCalledTimes(1);
-          expect(console.info).toHaveBeenCalledWith(`using serverLangPackCache for ${staticLocale}`);
+          expect(console.debug.mock.results[1].value).toMatchInlineSnapshot('"using serverLangPackCache for https://example.com/cdn/foo-bar/1.0.0/en-us/foo-bar.json"');
         });
 
         it('does not cache bad responses', async () => {
@@ -821,12 +820,12 @@ describe('intl duck', () => {
           const resource = await store.dispatch(loadLanguagePack(componentKey));
           expect(resource).toEqual({});
           expect(fetch).toHaveBeenCalledTimes(1);
-          expect(console.info).not.toHaveBeenCalled();
+          expect(console.debug).not.toHaveBeenCalled();
 
           const cachedResource = await store.dispatch(loadLanguagePack(componentKey));
           expect(cachedResource).toEqual({ test: 'does not cache bad responses' });
           expect(fetch).toHaveBeenCalledTimes(2);
-          expect(console.info).toHaveBeenCalledWith(`setting serverLangPackCache: url ${staticLocale}, data`, { test: 'does not cache bad responses' });
+          expect(console.debug.mock.results[0].value).toMatchInlineSnapshot('"setting serverLangPackCache: url https://example.com/cdn/foo-bar/1.0.0/en-us/foo-bar.json, data { test: \'does not cache bad responses\' }"');
         });
       });
     });

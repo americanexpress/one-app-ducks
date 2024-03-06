@@ -53,7 +53,8 @@ export default function errorReportingReducer(state = defaultState, action) {
   switch (action.type) {
     case ADD_ERROR_REPORT_TO_QUEUE:
       if (!(action.error || action.otherData)) {
-        console.warn('no error xor otherData given to report, probably due to localhost quirks');
+        // eslint-disable-next-line no-console -- logging
+        console.warn('no error or otherData given to report, probably due to localhost quirks');
         return state;
       }
       return state.set(
@@ -108,6 +109,7 @@ export function serverSideError(queue) {
       stack,
       metaData: { ...otherData },
     });
+    // eslint-disable-next-line no-console -- logging
     console.error(err);
   });
   return Promise.resolve({ thankYou: true });

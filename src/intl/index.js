@@ -177,7 +177,7 @@ const fetchLanguagePack = ({
     const cached = serverLangPackCache.get(url, defaultUrl);
     if (cached) {
       // eslint-disable-next-line no-console -- logging
-      console.info(`using serverLangPackCache for ${url}`);
+      console.debug('using serverLangPackCache for %s', url);
       return Promise.resolve(cached);
     }
   }
@@ -192,7 +192,7 @@ const fetchLanguagePack = ({
     .then((data) => {
       if (!global.BROWSER) {
         // eslint-disable-next-line no-console -- logging
-        console.info(`setting serverLangPackCache: url ${url}, data`, data);
+        console.debug('setting serverLangPackCache: url %s, data %o', url, data);
         serverLangPackCache.set(url, data, defaultUrl);
       }
       return data;
@@ -205,7 +205,8 @@ const fetchLanguagePack = ({
       const { status, statusText, url: responseUrl } = errorOrResponse;
 
       if (status === 404 && fallbackLocale && locale !== fallbackLocale && !retry) {
-        console.warn(`Missing ${locale} language pack for ${componentKey}, falling back to ${fallbackLocale}.`);
+        // eslint-disable-next-line no-console -- logging
+        console.warn('Missing %s language pack for %s, falling back to %s.', locale, componentKey, fallbackLocale);
         return fetchLanguagePack({
           getState,
           dispatch,

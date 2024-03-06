@@ -28,7 +28,7 @@ describe('server-cache', () => {
     // overwrite setInterval to provide unref for server-cache
     const lolexSetInterval = global.setInterval;
     intervalUnref = jest.fn();
-    global.setInterval = function (...args) {
+    global.setInterval = function mockSetInterval(...args) {
       const id = lolexSetInterval.apply(this, args);
       if (dontUseNodeTimers) return id;
       return {
@@ -38,7 +38,6 @@ describe('server-cache', () => {
     };
 
     jest.resetModules();
-    // eslint-disable-next-line global-require -- dynamic require
     const serverCache = require('../../src/intl/server-cache');
     set = serverCache.set;
     get = serverCache.get;
@@ -142,7 +141,7 @@ describe('server-cache', () => {
     });
 
     it('does not prevent testing in jsdom environments', () => {
-      setupCache(true);
+      expect(() => setupCache(true)).not.toThrow();
     });
   });
 });
