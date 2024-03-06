@@ -1,3 +1,10 @@
+# [4.5.0](https://github.com/americanexpress/one-app-ducks/compare/v4.4.4...v4.5.0) (2024-03-06)
+
+
+### Features
+
+* **conditionalIntl:** added useNativeIntl to updateLocale ([#76](https://github.com/americanexpress/one-app-ducks/issues/76)) ([e2301a3](https://github.com/americanexpress/one-app-ducks/commit/e2301a33a32defcd18554817fc45294338019f61))
+
 ## [4.4.4](https://github.com/americanexpress/one-app-ducks/compare/v4.4.3...v4.4.4) (2024-03-05)
 
 
