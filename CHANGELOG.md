@@ -1,3 +1,10 @@
+## [4.5.1](https://github.com/americanexpress/one-app-ducks/compare/v4.5.0...v4.5.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* **updateLocale:** fix window reference in node environments ([b18ce3b](https://github.com/americanexpress/one-app-ducks/commit/b18ce3bc9b95f94a40cdcbcbaa50a3c4624691a8))
+
 # [4.5.0](https://github.com/americanexpress/one-app-ducks/compare/v4.4.4...v4.5.0) (2024-03-06)
 
 
