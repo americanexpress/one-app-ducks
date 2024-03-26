@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`intl duck actions should not call getLocalePack when process.env.ONE_CONFIG_USE_NATIVE_INTL env var is true, if window is undefined 1`] = `
+{
+  "locale": "en-GB",
+  "type": "@americanexpress/one-app-ducks/intl/UPDATE_LOCALE",
+}
+`;
