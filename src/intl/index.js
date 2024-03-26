@@ -438,7 +438,7 @@ export function updateLocale(locale) {
       locale,
     };
 
-    if (window?.useNativeIntl || process.env.ONE_CONFIG_USE_NATIVE_INTL === 'true') {
+    if (globalThis.window?.useNativeIntl || process.env.ONE_CONFIG_USE_NATIVE_INTL === 'true') {
       return Promise.resolve().then(() => {
         dispatch(action);
       });
