@@ -1,19 +1,18 @@
 <!--ONE-DOCS-HIDE start-->
 
 <h1 align="center">
+
+  [One App is now InnerSource](https://github.com/americanexpress/one-app/issues/1393)
+
+  <hr/>
+
   <img src='https://github.com/americanexpress/one-app-ducks/raw/main/one-app-ducks.png' alt="One App Ducks - One Amex" width='50%'/>
 </h1>
 
 [![npm](https://img.shields.io/npm/v/@americanexpress/one-app-ducks)](https://www.npmjs.com/package/@americanexpress/one-app-ducks)
-![Health Check](https://github.com/americanexpress/one-app-ducks/workflows/Health%20Check/badge.svg)
 
 > [Redux](https://redux.js.org/) [ducks](https://github.com/erikras/ducks-modular-redux) used within
 > the One App ecosystem.
-
-## 👩‍💻 Hiring 👨‍💻
-
-Want to get paid for your contributions to `one-app-ducks`?
-> Send your resume to oneamex.careers@aexp.com
 
 ## 📖 Table of Contents
 
